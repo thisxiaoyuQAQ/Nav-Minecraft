@@ -1,7 +1,7 @@
-![image](https://github.com/thisxiaoyuQAQ/Nav-Minecraft/assets/103046768/47de8acb-80e1-4efd-a5e7-c137485e743f)# Nav-Minecraft
+## Nav-Minecraft
 Minecraft 插件wiki 服主帮助 导航站
 
-网站: nav.yumc.fun
+网站: <bold>nav.yumc.fun</bold>
 
 欢迎各位服主来小站光顾
 
@@ -12,4 +12,13 @@ Minecraft 插件wiki 服主帮助 导航站
 
 QQ群: [426996480](点击链接加入群聊【什么? 这个男人居然……?】：https://qm.qq.com/q/rI1LN7utsA) | Telegram: [点击联系我](https://t.me/xiaoyumc)
 
-![image](https://github.com/thisxiaoyuQAQ/Nav-Minecraft/assets/103046768/1dd223a2-e432-4e27-96a7-0db7ee757b4b)
+## 请给我们一个 ⭐Star！
+> 你的每一个免费的 ⭐Star 就是我们每一个前进的动力。
+
+<a href="https://star-history.com/#LuminolMC/Luminol&LuminolMC/LightingLuminol&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=LuminolMC/Luminol%2CLuminolMC/LightingLuminol&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=LuminolMC/Luminol%2CLuminolMC/LightingLuminol&type=Date" />
+    <img alt="Star历史表" src="https://api.star-history.com/svg?repos=LuminolMC/Luminol%2CLuminolMC/LightingLuminol&type=Date" />
+  </picture>
+</a>
