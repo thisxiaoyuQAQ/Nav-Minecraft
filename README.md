@@ -1,7 +1,7 @@
 ## Nav-Minecraft
 Minecraft 插件wiki 服主帮助 导航站
 
-网站: [nav.yumc.fun](https://nav.yumc.fun "喵喵喵")
+网站: [mcnav.fun](https://mcnav.fun "喵喵喵")
 
 欢迎各位服主来小站光顾
 
