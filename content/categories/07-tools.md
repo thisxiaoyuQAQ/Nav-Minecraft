@@ -20,10 +20,6 @@ links:
     url: https://crashmc.com/
     description: 访问 CrashMc 页面。
     tags: [tool, crash]
-  - title: Oasis插件搜索
-    url: https://oasis.yumc.fun
-    description: 使用 Oasis 搜索 Minecraft 插件资源。
-    tags: [tool, plugin, search]
   - title: motd生成器
     url: https://motd.gg/
     description: 生成 Minecraft 服务器 MOTD。

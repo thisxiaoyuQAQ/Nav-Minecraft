@@ -115,7 +115,7 @@ function Hero() {
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-pattern" aria-hidden="true" />
       <p className="eyebrow">Minecraft Navigation</p>
-      <h1 id="hero-title">方块世界的高效入口</h1>
+      <h1 id="hero-title">服主的实用工具</h1>
       <p className="hero-copy">收集服务端核心、插件 Wiki、开发文档、工具与社区资源。</p>
       <div className="hero-tags" aria-label="资源类型">
         <span>Server Core</span>

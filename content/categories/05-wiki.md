@@ -4,6 +4,26 @@ name: wiki
 icon: 📚
 description: Minecraft 插件、玩法系统与开服资料的 Wiki 和中文教程入口。
 links:
+  - title: 笨蛋开服教程
+    url: https://nitwikit.8aka.org
+    description: 开服新手必看
+    tags: [wiki, tutorial, server]
+  - title: Minecraft中文wiki
+    url: https://zh.minecraft.wiki/
+    description: 访问 Minecraft 中文 Wiki。
+    tags: [wiki, minecraft, chinese]       
+  - title: Velocity & WaterFall
+    url: https://zhuanlan.zhihu.com/p/307641494
+    description: 贺兰星辰的教程
+    tags: [wiki, proxy, article]
+  - title: Minecraft插件百科
+    url: https://mineplugin.org/
+    description: 访问 Minecraft 插件百科。
+    tags: [wiki, plugin, chinese] 
+  - title: Placeholderapi
+    url: https://wiki.placeholderapi.com/
+    description: 访问 PlaceholderAPI Wiki。
+    tags: [wiki, placeholder, plugin]
   - title: SX-Item
     url: https://www.maplex.top/archives/sxitem
     description: 访问 SX-Item 相关资料页面。
@@ -21,7 +41,7 @@ links:
     description: 查看 DeluxeMenus 插件 Wiki。
     tags: [wiki, menu, plugin]
   - title: EasyBot
-    url: https://docs.hualib.com
+    url: https://docs.inectar.cn/
     description: 访问 EasyBot 文档站。
     tags: [wiki, docs]
   - title: Adyeshach
@@ -47,10 +67,6 @@ links:
   - title: Codex
     url: https://snowcutieowo.github.io/Codex/#/
     description: 访问 Codex 文档页面。
-    tags: [wiki, plugin]
-  - title: AzureFlow
-    url: https://rokuko.gitbook.io/azureflow/
-    description: 访问 AzureFlow 文档页面。
     tags: [wiki, plugin]
   - title: Bedwars1058
     url: https://xtianshuos-organization.gitbook.io/bw1058
@@ -100,10 +116,6 @@ links:
     url: https://ultrapermissions.com/wiki/overview
     description: 访问 UltraPermissions Wiki。
     tags: [wiki, permissions, plugin]
-  - title: Ares
-    url: https://souts.cn/wiki/docs/ares
-    description: 访问 Ares 相关文档。
-    tags: [wiki, plugin]
   - title: attributeplus-pro
     url: https://ersha.gitbook.io/attributeplus-pro
     description: 访问 AttributePlus Pro 文档页面。
@@ -125,11 +137,11 @@ links:
     description: 访问 TrMenu v3 文档页面。
     tags: [wiki, menu, plugin]
   - title: geyser
-    url: https://geyser.superiormc.cn/
+    url: https://docs.superiormc.cn/geyser-wiki
     description: 访问 Geyser 中文文档页面。
     tags: [wiki, geyser, plugin]
   - title: PlotSquared
-    url: https://plotsquared.superiormc.cn/
+    url: https://docs.superiormc.cn/plotsquared-wiki
     description: 访问 PlotSquared 中文文档页面。
     tags: [wiki, plot, plugin]
   - title: Eco后代
@@ -137,23 +149,27 @@ links:
     description: 访问 Auxilor 相关中文文档。
     tags: [wiki, eco, plugin]
   - title: EcoX系列
-    url: https://eco.superiormc.cn/
+    url: https://docs.superiormc.cn/ecox-doc
     description: 访问 Eco 系列中文文档。
     tags: [wiki, eco, plugin]
   - title: elitemobs
-    url: https://elitemobs.superiormc.cn/
+    url: https://docs.superiormc.cn/elitemobs-wiki
     description: 访问 EliteMobs 中文文档。
     tags: [wiki, mobs, plugin]
   - title: itemadder
-    url: https://itemsadder.superiormc.cn/
+    url: https://docs.superiormc.cn/itemsadder-doc
     description: 访问 ItemsAdder 中文文档。
     tags: [wiki, items, plugin]
+  - title: auxilor
+    url: https://docs.superiormc.cn/auxilor-plugins
+    description: 访问 auxilor 中文文档。
+    tags: [wiki, items, plugin]    
   - title: tab
-    url: https://tab.superiormc.cn/
+    url: https://docs.superiormc.cn/tab-wiki
     description: 访问 TAB 中文文档。
     tags: [wiki, tab, plugin]
   - title: spark
-    url: https://snowcutieowo.huzpsb.eu.org/spark/#/
+    url: https://continue-project.netlify.app/wiki/spark
     description: 访问 spark 文档页面。
     tags: [wiki, performance, plugin]
   - title: pcd小组
@@ -188,28 +204,4 @@ links:
     url: https://pluginscdtribe.github.io/wiki/fast-async-worldedit/
     description: 访问 Fast Async WorldEdit 文档页面。
     tags: [wiki, building, plugin]
-  - title: Velocity & WaterFall
-    url: https://zhuanlan.zhihu.com/p/307641494
-    description: 阅读 Velocity 与 WaterFall 相关中文文章。
-    tags: [wiki, proxy, article]
-  - title: Oasis
-    url: https://nav.yumc.fun/wiki/oasis/index.html
-    description: 访问 Oasis 相关 Wiki。
-    tags: [wiki, plugin]
-  - title: Placeholderapi
-    url: https://wiki.placeholderapi.com/
-    description: 访问 PlaceholderAPI Wiki。
-    tags: [wiki, placeholder, plugin]
-  - title: Minecraft插件百科
-    url: https://mineplugin.org/
-    description: 访问 Minecraft 插件百科。
-    tags: [wiki, plugin, chinese]
-  - title: Minecraft中文wiki
-    url: https://zh.minecraft.wiki/
-    description: 访问 Minecraft 中文 Wiki。
-    tags: [wiki, minecraft, chinese]
-  - title: 笨蛋开服教程
-    url: https://nitwikit.8aka.org
-    description: 访问笨蛋开服教程。
-    tags: [wiki, tutorial, server]
 ---

@@ -4,10 +4,14 @@ name: 社区/论坛
 icon: 💬
 description: Minecraft 社区、论坛、资源平台与地图/模组站点入口。
 links:
-  - title: Zenless Craft
-    url: https://zcraft.leaflow.cn/
-    description: 访问 Zenless Craft 页面。
-    tags: [community, minecraft]
+  - title: mcbbs
+    url: https://www.mcbbs.net
+    description: 已死 勿念。
+    tags: [forum, community]
+  - title: MCBBS纪念站
+    url: https://mcbbs.co/
+    description: ?回来吧我的BBS??我最骄傲的信仰?⚡️历历在目的金粒⚡️?眼泪莫名在流淌??依稀记得热力值??还有给力的等级?⚡️把敌人都给打退⚡️✨通宵熬夜都不累✨
+    tags: [forum, community]    
   - title: Teacon
     url: https://www.teacon.cn/
     description: 访问 Teacon 页面。
@@ -63,13 +67,5 @@ links:
   - title: 红石中继器
     url: https://www.mczwlt.net/
     description: 访问红石中继器页面。
-    tags: [community]
-  - title: MCBBS纪念站
-    url: https://mcbbs.co/
-    description: 访问 MCBBS 纪念站。
-    tags: [forum, community]
-  - title: mcbbs
-    url: https://www.mcbbs.net
-    description: 访问 mcbbs 页面。
-    tags: [forum, community]
+    tags: [community]    
 ---

@@ -4,10 +4,6 @@ name: 站点公告
 icon: 📣
 description: MCNAV 站点说明、收录指南、赞助入口与交流群信息。
 links:
-  - title: 开发者作品收录指南
-    url: https://mcnav.cn/wiki/zm/index.html
-    description: 查看开发者作品在 MCNAV 收录的说明与提交参考。
-    tags: [notice, guide, submit]
   - title: 赞助我喵
     url: https://mcnav.cn/donate/index.html
     description: 访问 MCNAV 赞助支持页面。
