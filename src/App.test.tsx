@@ -53,6 +53,18 @@ describe('App', () => {
     expect(screen.getByRole('link', { name: /Modrinth/ })).toHaveAttribute('href', 'https://modrinth.com')
   })
 
+  it('renders full-screen UI structure hooks for the refreshed design', () => {
+    const { container } = render(<App initialCategories={categories} />)
+
+    expect(container.querySelector('.app-shell')).toHaveAttribute('data-layout', 'full-bleed')
+    expect(container.querySelector('.topbar-copy')).toBeInTheDocument()
+    expect(container.querySelector('.topbar-stat')).toHaveTextContent('1 个分类 · 3 个资源入口')
+    expect(container.querySelector('.hero-glow')).toBeInTheDocument()
+    expect(container.querySelector('.hero-block-field')).toBeInTheDocument()
+    expect(container.querySelectorAll('.hero-block')).toHaveLength(14)
+    expect(container.querySelector('.search-meta')).toHaveTextContent('共收录 3 个资源入口')
+  })
+
   it('does not render old product or management entry points', () => {
     render(<App initialCategories={categories} />)
 

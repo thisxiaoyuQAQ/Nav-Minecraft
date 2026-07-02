@@ -28,6 +28,8 @@ const themeIcons: Record<ThemeMode, string> = {
   dark: '🌙'
 }
 
+const heroBlocks = Array.from({ length: 14 }, (_, index) => index)
+
 export function App({ initialCategories }: AppProps) {
   const [query, setQuery] = useState('')
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
@@ -61,14 +63,14 @@ export function App({ initialCategories }: AppProps) {
   }, [prefersDark, themeMode])
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-layout="full-bleed">
       <Sidebar categories={initialCategories} />
 
       <main className="main-content" id="top">
         <header className="topbar" role="banner">
-          <div>
+          <div className="topbar-copy">
             <strong>MCNAV</strong>
-            <span>{initialCategories.length} 个分类 · {totalLinks} 个资源入口</span>
+            <span className="topbar-stat">{initialCategories.length} 个分类 · {totalLinks} 个资源入口</span>
           </div>
           <ThemeToggle themeMode={themeMode} onToggle={() => setThemeMode(getNextTheme(themeMode))} />
         </header>
@@ -90,7 +92,7 @@ function Sidebar({ categories }: { categories: NavCategory[] }) {
   return (
     <aside className="sidebar" aria-label="分类导航">
       <a className="brand-mark" href="#top" aria-label="MCNAV 首页">
-        <span className="brand-icon">M</span>
+        <span className="brand-icon" aria-hidden="true">M</span>
         <span className="brand-copy">
           <span className="brand-text">MCNAV</span>
           <span className="brand-subtitle">Minecraft Navigation</span>
@@ -113,9 +115,15 @@ function Sidebar({ categories }: { categories: NavCategory[] }) {
 function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
+      <div className="hero-glow" aria-hidden="true" />
       <div className="hero-pattern" aria-hidden="true" />
+      <div className="hero-block-field" aria-hidden="true">
+        {heroBlocks.map((block) => (
+          <span className="hero-block" key={block} />
+        ))}
+      </div>
       <p className="eyebrow">Minecraft Navigation</p>
-      <h1 id="hero-title">服主的实用工具</h1>
+      <h1 id="hero-title">方块世界的高效入口</h1>
       <p className="hero-copy">收集服务端核心、插件 Wiki、开发文档、工具与社区资源。</p>
       <div className="hero-tags" aria-label="资源类型">
         <span>Server Core</span>
@@ -148,7 +156,7 @@ function SearchPanel({
           placeholder="搜索核心、插件、Wiki、工具或服务器资源"
         />
       </label>
-      <p>{query ? `找到 ${visibleLinks} / ${totalLinks} 个资源` : `共收录 ${totalLinks} 个资源入口`}</p>
+      <p className="search-meta">{query ? `找到 ${visibleLinks} / ${totalLinks} 个资源` : `共收录 ${totalLinks} 个资源入口`}</p>
     </section>
   )
 }
@@ -158,7 +166,7 @@ function CategorySection({ category }: { category: NavCategory }) {
     <section className="category-section" id={`category-${category.id}`} aria-labelledby={`heading-${category.id}`}>
       <div className="category-heading">
         <span className="category-icon" aria-hidden="true">{category.icon}</span>
-        <div>
+        <div className="category-copy">
           <h2 id={`heading-${category.id}`}>{category.name}</h2>
           <p>{category.description}</p>
         </div>
