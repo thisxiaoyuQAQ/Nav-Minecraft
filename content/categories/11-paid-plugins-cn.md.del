@@ -1,0 +1,19 @@
+---
+id: paid-plugins-cn
+name: 国产付费插件
+icon: 💎
+description: 国内 Minecraft 付费插件与相关开发组资料入口。
+links:
+  - title: Anine
+    url: https://www.yuque.com/xuliang-zevec/bd65ng/if6gcqxfxp6cml59
+    description: 访问 Anine 相关资料页面。
+    tags: [plugin, paid, cn]
+  - title: legendary系列
+    url: https://gyzer.gitbook.io/legendaryruneplus
+    description: 访问 Legendary 系列相关文档。
+    tags: [plugin, paid, cn]
+  - title: 猹件开发组
+    url: http://wiki.fcwqmc.cn/
+    description: 访问猹件开发组 Wiki。
+    tags: [plugin, paid, cn]
+---

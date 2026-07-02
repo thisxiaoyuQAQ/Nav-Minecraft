@@ -1,0 +1,55 @@
+---
+id: plugin-recommendations
+name: 插件推荐
+icon: ✨
+description: 常用 Minecraft 服务器插件、反作弊、权限、菜单与管理工具推荐入口。
+links:
+  - title: Ares - 阿瑞斯引擎
+    url: https://nav.yumc.fun/wiki/ares/index.html
+    description: 访问 Ares 阿瑞斯引擎相关页面。
+    tags: [plugin, recommendation]
+  - title: 次元反作弊
+    url: https://www.cywtb.cn/#/antiCheat
+    description: 访问次元反作弊页面。
+    tags: [plugin, anticheat]
+  - title: SeekInventory
+    url: https://bbs.mc9y.net/resources/851/
+    description: 访问 SeekInventory 资源页面。
+    tags: [plugin, inventory]
+  - title: Trchat
+    url: https://github.com/TrPlugins/TrChat
+    description: 访问 TrChat 项目仓库。
+    tags: [plugin, chat, github]
+  - title: TrMenu
+    url: https://github.com/Dreeam-qwq/TrMenu
+    description: 访问 TrMenu 项目仓库。
+    tags: [plugin, menu, github]
+  - title: Multiverse-Core
+    url: https://www.spigotmc.org/resources/multiverse-core.390/
+    description: 访问 Multiverse-Core 插件资源页面。
+    tags: [plugin, world, spigot]
+  - title: LiteSignIn
+    url: https://www.spigotmc.org/resources/lite-sign-in-1-7-1-20-sign-in-rewards-chest-gui-leaderboard-mysql-sqlite.79584/
+    description: 访问 LiteSignIn 插件资源页面。
+    tags: [plugin, signin, spigot]
+  - title: CoreProtect
+    url: https://www.spigotmc.org/resources/coreprotect.8631/
+    description: 访问 CoreProtect 插件资源页面。
+    tags: [plugin, rollback, spigot]
+  - title: Console-Spam-Fix
+    url: https://www.spigotmc.org/resources/console-spam-fix.18410/
+    description: 访问 Console-Spam-Fix 插件资源页面。
+    tags: [plugin, console, spigot]
+  - title: Gsit
+    url: https://www.spigotmc.org/resources/gsit-modern-sit-seat-and-chair-lay-and-crawl-plugin-1-13-1-20-4.62325/
+    description: 访问 GSit 插件资源页面。
+    tags: [plugin, spigot]
+  - title: Tab
+    url: https://www.spigotmc.org/resources/tab-1-5-1-20-4.57806/
+    description: 访问 TAB 插件资源页面。
+    tags: [plugin, tab, spigot]
+  - title: Luckperms
+    url: https://www.spigotmc.org/resources/luckperms.28140/
+    description: 访问 LuckPerms 插件资源页面。
+    tags: [plugin, permissions, spigot]
+---
