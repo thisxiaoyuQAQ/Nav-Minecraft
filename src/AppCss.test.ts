@@ -2,26 +2,92 @@
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
-const css = readFileSync(new URL('./App.css', import.meta.url), 'utf8')
+const css = readFileSync(new URL('./App.css', import.meta.url), { encoding: 'utf8' })
 
-function getRuleBody(selector: string): string {
-  const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const match = css.match(new RegExp(`${escapedSelector}\\s*\\{([\\s\\S]*?)\\n\\}`, 'm'))
+type CssRule = {
+  selector: string
+  body: string
+}
 
-  if (!match) {
+function parseCssRules(source: string): CssRule[] {
+  const rules: CssRule[] = []
+
+  function collectRules(block: string): void {
+    let index = 0
+
+    while (index < block.length) {
+      const openBrace = block.indexOf('{', index)
+
+      if (openBrace === -1) {
+        break
+      }
+
+      const selector = block.slice(index, openBrace).trim()
+      let depth = 1
+      let cursor = openBrace + 1
+
+      while (cursor < block.length && depth > 0) {
+        const char = block[cursor]
+
+        if (char === '{') {
+          depth += 1
+        } else if (char === '}') {
+          depth -= 1
+        }
+
+        cursor += 1
+      }
+
+      if (depth !== 0) {
+        throw new Error(`Unclosed CSS rule starting at: ${selector}`)
+      }
+
+      const body = block.slice(openBrace + 1, cursor - 1)
+
+      if (selector.startsWith('@')) {
+        collectRules(body)
+      } else if (selector) {
+        rules.push({ selector, body })
+      }
+
+      index = cursor
+    }
+  }
+
+  collectRules(source)
+
+  return rules
+}
+
+const rules = parseCssRules(css)
+
+function getRuleBodies(selector: string): string[] {
+  const bodies = rules
+    .filter((rule) => rule.selector.split(',').map((part) => part.trim()).includes(selector))
+    .map((rule) => rule.body)
+
+  if (bodies.length === 0) {
     throw new Error(`${selector} rule not found`)
   }
 
-  return match[1]
+  return bodies
 }
 
 describe('App.css layout contracts', () => {
-  it('makes the app shell full bleed instead of width capped', () => {
-    const appShell = getRuleBody('.app-shell')
+  it('makes the base app shell full bleed instead of width capped', () => {
+    const [baseAppShell] = getRuleBodies('.app-shell')
 
-    expect(appShell).toContain('width: 100%;')
-    expect(appShell).toContain('min-height: 100vh;')
-    expect(appShell).not.toContain('width: min(')
+    expect(baseAppShell).toContain('width: 100%;')
+    expect(baseAppShell).toContain('min-height: 100vh;')
+  })
+
+  it('does not reintroduce app shell width caps in any rule block', () => {
+    const appShellRules = getRuleBodies('.app-shell')
+
+    for (const ruleBody of appShellRules) {
+      expect(ruleBody).not.toMatch(/(?:^|;)\s*max-width\s*:/i)
+      expect(ruleBody).not.toMatch(/(?:^|;)\s*width\s*:\s*(?:min\(|clamp\(|\d+(?:\.\d+)?(?:px|rem|vw))/i)
+    }
   })
 
   it('includes responsive and reduced-motion rules for the refreshed UI', () => {
