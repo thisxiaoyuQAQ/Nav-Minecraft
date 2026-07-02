@@ -45,7 +45,7 @@ describe('App', () => {
 
     expect(screen.getByRole('banner')).toHaveTextContent('MCNAV')
     expect(screen.getByRole('link', { name: 'MCNAV 首页' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: '方块世界的高效入口' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: '服主之家' })).toBeInTheDocument()
     expect(screen.getByText('收集服务端核心、插件 Wiki、开发文档、工具与社区资源。')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('搜索核心、插件、Wiki、工具或服务器资源')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Minecraft 资源/ })).toHaveAttribute('href', '#category-minecraft')
@@ -57,6 +57,10 @@ describe('App', () => {
     const { container } = render(<App initialCategories={categories} />)
 
     expect(container.querySelector('.app-shell')).toHaveAttribute('data-layout', 'full-bleed')
+    const brandIcon = container.querySelector('.brand-icon')
+    expect(brandIcon?.tagName).toBe('IMG')
+    expect(brandIcon).toHaveAttribute('src', '/logo.png')
+    expect(brandIcon).toHaveAttribute('alt', 'MCNAV logo')
     expect(container.querySelector('.topbar-copy')).toBeInTheDocument()
     expect(container.querySelector('.topbar-stat')).toHaveTextContent('1 个分类 · 3 个资源入口')
     expect(container.querySelector('.hero-glow')).toBeInTheDocument()

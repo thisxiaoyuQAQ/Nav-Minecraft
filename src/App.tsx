@@ -92,7 +92,7 @@ function Sidebar({ categories }: { categories: NavCategory[] }) {
   return (
     <aside className="sidebar" aria-label="分类导航">
       <a className="brand-mark" href="#top" aria-label="MCNAV 首页">
-        <span className="brand-icon" aria-hidden="true">M</span>
+        <img className="brand-icon" src="/logo.png" alt="MCNAV logo" />
         <span className="brand-copy">
           <span className="brand-text">MCNAV</span>
           <span className="brand-subtitle">Minecraft Navigation</span>
@@ -123,7 +123,7 @@ function Hero() {
         ))}
       </div>
       <p className="eyebrow">Minecraft Navigation</p>
-      <h1 id="hero-title">方块世界的高效入口</h1>
+      <h1 id="hero-title">服主之家</h1>
       <p className="hero-copy">收集服务端核心、插件 Wiki、开发文档、工具与社区资源。</p>
       <div className="hero-tags" aria-label="资源类型">
         <span>Server Core</span>
