@@ -54,7 +54,7 @@ const css = readFileSync(new URL('./App.css', import.meta.url), 'utf8')
 describe('MCNAV visual style contract', () => {
   it('uses a full-bleed app shell instead of a centered max-width page', () => {
     expect(css).not.toContain('width: min(1440px, 100%)')
-    expect(css).toMatch(/\.app-shell\s*\{[\s\S]*width:\s*100%;/[\s\S]*\}/)
+    expect(css).toMatch(/\.app-shell\s*\{[\s\S]*width:\s*100%;[\s\S]*\}/)
     expect(css).toMatch(/\.app-shell\s*\{[\s\S]*min-height:\s*100vh;/)
     expect(css).toContain('padding: clamp(16px, 2vw, 32px);')
   })
