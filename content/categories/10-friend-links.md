@@ -6,6 +6,10 @@ description: 与 Minecraft 开服、插件和资源相关的友站入口。
 links:
   - title: Bukkit
     url: https://bukkit.wiki
-    description: 访问 Bukkit Wiki 站点。
+    description: Minecraft 多人联机文档库
     tags: [friend, bukkit, wiki]
+  - title: Continue Project
+    url: https://snowcutieowo.github.io/
+    description: 续 - 维基档案馆
+    tags: [friend, bukkit, wiki]    
 ---
