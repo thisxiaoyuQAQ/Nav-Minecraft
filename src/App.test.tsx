@@ -82,13 +82,14 @@ describe('App', () => {
     expect(screen.queryByText('系统管理')).not.toBeInTheDocument()
   })
 
-  it('renders a GitHub repo link next to the theme toggle', () => {
+  it('renders a GitHub repo link with the last commit date, next to the theme toggle', () => {
     render(<App initialCategories={categories} />)
 
-    const repo = screen.getByRole('link', { name: 'GitHub 仓库' })
+    const repo = screen.getByRole('link', { name: /GitHub 仓库/ })
     expect(repo).toHaveAttribute('href', 'https://github.com/thisxiaoyuQAQ/Nav-Minecraft')
     expect(repo).toHaveAttribute('target', '_blank')
     expect(repo).toHaveAttribute('rel', 'noreferrer')
+    expect(repo).toHaveTextContent(/最后提交 \d{4}-\d{2}-\d{2}/)
 
     const toggle = screen.getByRole('button', { name: '切换主题：当前跟随系统' })
     expect(repo.compareDocumentPosition(toggle)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)

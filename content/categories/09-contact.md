@@ -2,7 +2,7 @@
 id: contact
 name: 联系站长
 icon: 📮
-description: MCNAV 站长赞助、Telegram 与 QQ 联系入口。
+description: MCNAV 站长赞助、与 QQ 联系入口。
 links:
   - title: 爱发电
     url: https://ifdian.net/a/ixiaoyu

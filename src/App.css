@@ -297,12 +297,16 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  gap: 6px;
+  padding: 8px 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--panel-strong);
   color: var(--text);
   box-shadow: var(--inner-highlight);
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
@@ -310,8 +314,8 @@ a {
 
 .repo-link svg {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .repo-link:hover,
