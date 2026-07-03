@@ -148,3 +148,29 @@ describe('design tokens', () => {
     expect(root).toContain('--accent-strong: #1d8242;')
   })
 })
+
+describe('decoration policy', () => {
+  it('body has only the base gradient, no decorative layers', () => {
+    const [body] = getRuleBodies('body')
+    expect(body).not.toMatch(/radial-gradient/)
+    expect(body).toContain('linear-gradient(145deg, var(--bg), var(--bg-soft))')
+  })
+
+  it('removes body::before second grid', () => {
+    expect(() => getRuleBodies('body::before')).toThrow('body::before rule not found')
+  })
+
+  it('removes hero-pattern rule', () => {
+    expect(() => getRuleBodies('.hero-pattern')).toThrow('.hero-pattern rule not found')
+  })
+
+  it('removes nav-card::after hover spot', () => {
+    expect(() => getRuleBodies('.nav-card::after')).toThrow('.nav-card::after rule not found')
+  })
+
+  it('keeps hero-glow as a single radial glow', () => {
+    const [glow] = getRuleBodies('.hero-glow')
+    expect(glow).toContain('radial-gradient(circle, var(--accent-glow), transparent')
+    expect(glow).toContain('border-radius: var(--r-full);')
+  })
+})
