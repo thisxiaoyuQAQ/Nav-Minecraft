@@ -38,6 +38,10 @@ content/categories/*.md
 
 首页只读取 YAML frontmatter 中的 `id`、`name`、`icon`、`description` 和 `links`。正文可用于维护备注，但不会渲染到首页。
 
+文章则存放在 `content/posts/*.md`，每个文件即一篇文章，文件名（不含扩展名）作为 slug，访问地址为 `/posts/<slug>`。frontmatter 中的 `title`、`description`、`date`、`tags` 均为可选项：未提供 `title` 时依次回退到正文第一个一级标题，再回退到 slug。正文按 Markdown 渲染，其中的相对路径链接（如 `/posts/xxx`）会做站内跳转，外部链接在新标签页打开。
+
+由于是单页应用，部署时需要让 `/posts/*` 等非根路径回退到 `index.html`（SPA fallback），否则直接打开或刷新深链会 404。
+
 ## 旧站源码
 
 `wwwroot/` 是旧 PHP / TwoNav 站点源码，仅作为视觉、内容和历史结构参考；新的 React 静态站运行时不依赖它，也不需要修改它。

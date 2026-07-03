@@ -7,11 +7,11 @@ type Block =
   | { type: 'blockquote'; text: string }
   | { type: 'code'; text: string }
 
-export function renderMarkdown(body: string): ReactNode {
+export function renderMarkdown(body: string, onNavigate?: (path: string) => void): ReactNode {
   const source = body.replace(/\r\n/g, '\n')
   const blocks = parseBlocks(source)
   return blocks.map((block, index) => (
-    <Fragment key={index}>{renderBlock(block)}</Fragment>
+    <Fragment key={index}>{renderBlock(block, onNavigate)}</Fragment>
   ))
 }
 
@@ -98,28 +98,28 @@ function isBlockStart(line: string): boolean {
   )
 }
 
-function renderBlock(block: Block): ReactNode {
+function renderBlock(block: Block, onNavigate?: (path: string) => void): ReactNode {
   switch (block.type) {
     case 'heading': {
       const Tag = (`h${block.level}` as 'h1' | 'h2' | 'h3')
-      return <Tag>{renderInline(block.text)}</Tag>
+      return <Tag>{renderInline(block.text, onNavigate)}</Tag>
     }
     case 'paragraph':
-      return <p>{renderInline(block.text)}</p>
+      return <p>{renderInline(block.text, onNavigate)}</p>
     case 'list':
       return block.ordered ? (
-        <ol>{block.items.map((item, index) => <li key={index}>{renderInline(item)}</li>)}</ol>
+        <ol>{block.items.map((item, index) => <li key={index}>{renderInline(item, onNavigate)}</li>)}</ol>
       ) : (
-        <ul>{block.items.map((item, index) => <li key={index}>{renderInline(item)}</li>)}</ul>
+        <ul>{block.items.map((item, index) => <li key={index}>{renderInline(item, onNavigate)}</li>)}</ul>
       )
     case 'blockquote':
-      return <blockquote>{renderInline(block.text)}</blockquote>
+      return <blockquote>{renderInline(block.text, onNavigate)}</blockquote>
     case 'code':
       return <pre><code>{block.text}</code></pre>
   }
 }
 
-function renderInline(text: string): ReactNode[] {
+function renderInline(text: string, onNavigate?: (path: string) => void): ReactNode[] {
   const nodes: ReactNode[] = []
   let buffer = ''
   let i = 0
@@ -171,7 +171,40 @@ function renderInline(text: string): ReactNode[] {
           flush()
           const label = text.slice(i + 1, close)
           const url = text.slice(close + 2, end)
-          nodes.push(<a key={key++} href={url}>{label}</a>)
+          const isRootedInternal = url.startsWith('/')
+          const isAllowed =
+            isRootedInternal ||
+            /^https?:/i.test(url) ||
+            /^mailto:/i.test(url) ||
+            url.startsWith('#') ||
+            url.startsWith('./') ||
+            url.startsWith('../')
+
+          if (!isAllowed) {
+            nodes.push(label)
+          } else if (isRootedInternal && onNavigate) {
+            nodes.push(
+              <a
+                key={key++}
+                href={url}
+                onClick={(event) => {
+                  event.preventDefault()
+                  onNavigate(url)
+                }}
+              >
+                {label}
+              </a>
+            )
+          } else if (/^https?:/i.test(url)) {
+            nodes.push(
+              <a key={key++} href={url} target="_blank" rel="noreferrer">
+                {label}
+              </a>
+            )
+          } else {
+            nodes.push(<a key={key++} href={url}>{label}</a>)
+          }
+
           i = end + 1
           continue
         }

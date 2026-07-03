@@ -157,6 +157,11 @@ describe('App', () => {
     expect(within(modrinthCard).getByText('M')).toBeInTheDocument()
   })
 
+  it('renders the home view when there are no posts', () => {
+    render(<App initialCategories={categories} initialPosts={[]} />)
+    expect(screen.getByRole('heading', { name: '服主之家' })).toBeInTheDocument()
+  })
+
   const routingPosts: ArticlePost[] = [
     {
       slug: 'server-core-guide',

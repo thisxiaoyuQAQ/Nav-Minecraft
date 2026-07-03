@@ -125,7 +125,7 @@ export function App({ initialCategories, initialPosts = [] }: AppProps) {
           </>
         )}
 
-        {!isHome && (activePost ? <PostView post={activePost} /> : <NotFoundView />)}
+        {!isHome && (activePost ? <PostView post={activePost} onNavigate={navigate} /> : <NotFoundView />)}
       </main>
     </div>
   )
@@ -268,7 +268,7 @@ function LinkIcon({ link, categoryIcon }: { link: NavLink; categoryIcon: string 
   return <span className="link-icon fallback" aria-hidden="true">{getFallbackIconLabel(link.title, categoryIcon)}</span>
 }
 
-function PostView({ post }: { post: ArticlePost }) {
+function PostView({ post, onNavigate }: { post: ArticlePost; onNavigate: (path: string) => void }) {
   return (
     <article className="post-page">
       <header className="post-header">
@@ -287,7 +287,7 @@ function PostView({ post }: { post: ArticlePost }) {
           </div>
         )}
       </header>
-      <div className="post-body">{renderMarkdown(post.body)}</div>
+      <div className="post-body">{renderMarkdown(post.body, onNavigate)}</div>
     </article>
   )
 }

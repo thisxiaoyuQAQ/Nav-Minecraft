@@ -1,5 +1,5 @@
-import { render } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { fireEvent, render } from '@testing-library/react'
+import { describe, expect, it, vi } from 'vitest'
 import { renderMarkdown } from './markdown'
 
 function containerFor(body: string) {
@@ -49,5 +49,23 @@ describe('renderMarkdown', () => {
     const link = container.querySelector('a')
     expect(link?.textContent).toBe('文本')
     expect(link?.getAttribute('href')).toBe('https://example.com')
+    expect(link?.getAttribute('target')).toBe('_blank')
+    expect(link?.getAttribute('rel')).toBe('noreferrer')
+  })
+
+  it('renders no anchor for dangerous schemes', () => {
+    const container = containerFor('[x](javascript:alert(1))')
+    expect(container.querySelector('a')).toBeNull()
+    expect(container.textContent).toContain('x')
+  })
+
+  it('intercepts in-article internal links via onNavigate', () => {
+    const mockNavigate = vi.fn()
+    const { container } = render(<div>{renderMarkdown('[指南](/posts/welcome)', mockNavigate)}</div>)
+    const link = container.querySelector('a')
+    expect(link?.getAttribute('href')).toBe('/posts/welcome')
+
+    fireEvent.click(link!)
+    expect(mockNavigate).toHaveBeenCalledWith('/posts/welcome')
   })
 })
