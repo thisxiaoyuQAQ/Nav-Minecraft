@@ -1,7 +1,8 @@
-import { fireEvent, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { App } from './App'
+import type { ArticlePost } from './postTypes'
 import type { NavCategory } from './navTypes'
 
 const categories: NavCategory[] = [
@@ -63,7 +64,7 @@ describe('App', () => {
     expect(container.querySelector('.app-shell')).toHaveAttribute('data-layout', 'full-bleed')
     const brandIcon = container.querySelector('.brand-icon')
     expect(brandIcon?.tagName).toBe('IMG')
-    expect(brandIcon).toHaveAttribute('src', '/logo.png')
+    expect(brandIcon).toHaveAttribute('src', '/Nether_Star.gif')
     expect(brandIcon).toHaveAttribute('alt', 'MCNAV logo')
     expect(container.querySelector('.topbar-copy')).toBeInTheDocument()
     expect(container.querySelector('.topbar-stat')).toHaveTextContent('1 个分类 · 3 个资源入口')
@@ -79,6 +80,18 @@ describe('App', () => {
     expect(screen.queryByText('TwoNav')).not.toBeInTheDocument()
     expect(screen.queryByText('管理记录')).not.toBeInTheDocument()
     expect(screen.queryByText('系统管理')).not.toBeInTheDocument()
+  })
+
+  it('renders a GitHub repo link next to the theme toggle', () => {
+    render(<App initialCategories={categories} />)
+
+    const repo = screen.getByRole('link', { name: 'GitHub 仓库' })
+    expect(repo).toHaveAttribute('href', 'https://github.com/thisxiaoyuQAQ/Nav-Minecraft')
+    expect(repo).toHaveAttribute('target', '_blank')
+    expect(repo).toHaveAttribute('rel', 'noreferrer')
+
+    const toggle = screen.getByRole('button', { name: '切换主题：当前跟随系统' })
+    expect(repo.compareDocumentPosition(toggle)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
   })
 
   it('cycles theme from system to light to dark and stores the choice', async () => {
@@ -110,18 +123,116 @@ describe('App', () => {
   it('renders generated favicon images for links without manual icons', () => {
     render(<App initialCategories={categories} />)
 
-    expect(screen.getAllByAltText('')[0]).toHaveAttribute(
+    const modrinthCard = screen.getByRole('link', { name: /Modrinth/ })
+    expect(within(modrinthCard).getByAltText('')).toHaveAttribute(
       'src',
       'https://www.google.com/s2/favicons?domain=modrinth.com&sz=64'
     )
   })
 
+  it('renders ICP and public security beian links in the footer', () => {
+    render(<App initialCategories={categories} />)
+
+    const icp = screen.getByRole('link', { name: '苏ICP备2024112104号-4' })
+    expect(icp).toHaveAttribute('href', 'https://beian.miit.gov.cn/')
+    expect(icp).toHaveAttribute('target', '_blank')
+    expect(icp).toHaveAttribute('rel', 'nofollow')
+
+    const police = screen.getByRole('link', { name: '苏公网安备32020602003572号' })
+    expect(police).toHaveAttribute(
+      'href',
+      'https://beian.mps.gov.cn/#/query/webSearch?code=32020602003572'
+    )
+    expect(police).toHaveAttribute('target', '_blank')
+    expect(police).toHaveAttribute('rel', 'noreferrer')
+  })
+
   it('falls back to a text icon when the favicon fails to load', () => {
     render(<App initialCategories={categories} />)
 
-    const image = screen.getAllByAltText('')[0]
+    const modrinthCard = screen.getByRole('link', { name: /Modrinth/ })
+    const image = within(modrinthCard).getByAltText('')
     fireEvent.error(image)
 
-    expect(within(screen.getByRole('link', { name: /Modrinth/ })).getByText('M')).toBeInTheDocument()
+    expect(within(modrinthCard).getByText('M')).toBeInTheDocument()
+  })
+
+  const routingPosts: ArticlePost[] = [
+    {
+      slug: 'server-core-guide',
+      title: '服务端核心选择指南',
+      description: '选择核心。',
+      date: '2026-07-03',
+      tags: ['server', 'guide'],
+      body: '## 什么时候用 Folia\n\nFolia 适合并行。'
+    }
+  ]
+
+  const routingCategories: NavCategory[] = [
+    {
+      id: 'minecraft',
+      name: 'Minecraft 资源',
+      icon: '🎮',
+      description: '游戏资源',
+      links: [
+        { title: 'Modrinth', url: 'https://modrinth.com', description: '模组平台', tags: ['mods'] },
+        { title: '服务端核心选择指南', url: '/posts/server-core-guide', description: '内部文章', tags: ['guide'] },
+        { title: '失踪文章', url: '/posts/missing', description: '测试 404', tags: ['test'] }
+      ]
+    }
+  ]
+
+  describe('routing', () => {
+    beforeEach(() => {
+      window.history.replaceState({}, '', '/')
+    })
+
+    it('renders the home view at the root path', () => {
+      render(<App initialCategories={routingCategories} initialPosts={routingPosts} />)
+      expect(screen.getByRole('heading', { name: '服主之家' })).toBeInTheDocument()
+    })
+
+    it('keeps external links opening in a new tab and internal links in-page', () => {
+      render(<App initialCategories={routingCategories} initialPosts={routingPosts} />)
+      expect(screen.getByRole('link', { name: /Modrinth/ })).toHaveAttribute('target', '_blank')
+      expect(screen.getByRole('link', { name: /服务端核心选择指南/ })).not.toHaveAttribute('target')
+    })
+
+    it('navigates to an internal article when its card is clicked', async () => {
+      render(<App initialCategories={routingCategories} initialPosts={routingPosts} />)
+      await userEvent.click(screen.getByRole('link', { name: /服务端核心选择指南/ }))
+
+      expect(screen.getByRole('heading', { name: '服务端核心选择指南' })).toBeInTheDocument()
+      expect(screen.getByText('Folia 适合并行。')).toBeInTheDocument()
+      expect(screen.queryByRole('heading', { name: '服主之家' })).not.toBeInTheDocument()
+    })
+
+    it('returns home via the back button', async () => {
+      render(<App initialCategories={routingCategories} initialPosts={routingPosts} />)
+      await userEvent.click(screen.getByRole('link', { name: /服务端核心选择指南/ }))
+
+      await userEvent.click(screen.getByRole('button', { name: /返回导航首页/ }))
+
+      expect(screen.getByRole('heading', { name: '服主之家' })).toBeInTheDocument()
+    })
+
+    it('returns home on browser back after opening an article', async () => {
+      render(<App initialCategories={routingCategories} initialPosts={routingPosts} />)
+      await userEvent.click(screen.getByRole('link', { name: /服务端核心选择指南/ }))
+
+      await act(async () => {
+        window.history.pushState({}, '', '/')
+        window.dispatchEvent(new PopStateEvent('popstate'))
+      })
+
+      expect(screen.getByRole('heading', { name: '服主之家' })).toBeInTheDocument()
+    })
+
+    it('shows the not-found view for a missing article slug', async () => {
+      render(<App initialCategories={routingCategories} initialPosts={routingPosts} />)
+      await userEvent.click(screen.getByRole('link', { name: /失踪文章/ }))
+
+      expect(screen.getByRole('heading', { name: '文章不存在' })).toBeInTheDocument()
+    })
   })
 })
