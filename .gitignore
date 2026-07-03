@@ -4,3 +4,6 @@ dist
 .claude
 wwwroot
 TwoNav_bookmarks_20260702_171148.html
+.agents
+docs
+.playwright-cli

@@ -9,11 +9,11 @@ links:
     description: Purpur+Gale的下游 专注性能提升 尊重原版行为、兼容插件生态
     tags: [server, core, github]
   - title: LightingLuminol
-    url: https://luminolsuki.moe/
+    url: https://github.com/LuminolMC/LightingLuminol
     description: Luminol下游 目标是在Folia上运行更多Bukkit插件
     tags: [server, core, github]      
   - title: Lophine
-    url: https://luminolsuki.moe/
+    url: https://github.com/LuminolMC/Lophine
     description: Luminol下游 目标是在Folia上实现更多生电的内容
     tags: [server, core, github]    
   - title: Luminol
