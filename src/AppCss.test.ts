@@ -111,4 +111,10 @@ describe('App.css layout contracts', () => {
     expect(tooltipFocus).toContain('visibility: visible;')
     expect(cardDescriptionRules.some((ruleBody) => ruleBody.includes('-webkit-line-clamp: 2;'))).toBe(true)
   })
+
+  it('lets nav card tooltips escape the card bounds', () => {
+    const [navCard] = getRuleBodies('.nav-card')
+
+    expect(navCard).toContain('overflow: visible;')
+  })
 })

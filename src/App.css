@@ -512,7 +512,7 @@ a {
   align-items: center;
   gap: 14px;
   min-height: 118px;
-  overflow: hidden;
+  overflow: visible;
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: 25px;
