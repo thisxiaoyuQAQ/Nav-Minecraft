@@ -41,7 +41,7 @@ describe('App', () => {
   })
 
   it('renders MCNAV branding, Minecraft copy, search box, category heading, and cards', () => {
-    render(<App initialCategories={categories} />)
+    const { container } = render(<App initialCategories={categories} />)
 
     expect(screen.getByRole('banner')).toHaveTextContent('MCNAV')
     expect(screen.getByRole('link', { name: 'MCNAV 首页' })).toBeInTheDocument()
@@ -51,6 +51,10 @@ describe('App', () => {
     expect(screen.getByRole('link', { name: /Minecraft 资源/ })).toHaveAttribute('href', '#category-minecraft')
     expect(screen.getByRole('heading', { name: /Minecraft 资源/ })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Modrinth/ })).toHaveAttribute('href', 'https://modrinth.com')
+
+    const tooltip = container.querySelector('.nav-card .card-tooltip')
+    expect(tooltip).toHaveTextContent('模组平台')
+    expect(tooltip).toHaveAttribute('aria-hidden', 'true')
   })
 
   it('renders full-screen UI structure hooks for the refreshed design', () => {

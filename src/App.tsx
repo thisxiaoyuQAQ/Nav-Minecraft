@@ -191,6 +191,7 @@ function NavCard({ link, categoryIcon }: { link: NavLink; categoryIcon: string }
         <span>{link.description}</span>
       </span>
       <span className="card-arrow" aria-hidden="true">↗</span>
+      <span className="card-tooltip" aria-hidden="true">{link.description}</span>
     </a>
   )
 }
