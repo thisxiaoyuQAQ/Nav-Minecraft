@@ -17,7 +17,7 @@ describe('content categories', () => {
 
       for (const link of category.links) {
         expect(link.title.trim()).not.toBe('')
-        expect(link.url).toMatch(/^https?:\/\//)
+        expect(link.url).toMatch(/^https?:\/\/|^\/posts\//)
         expect(link.description).not.toMatch(/TwoNav|自动导入|由.*导入/)
         expect(Array.isArray(link.tags)).toBe(true)
       }

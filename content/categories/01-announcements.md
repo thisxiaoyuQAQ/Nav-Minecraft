@@ -16,4 +16,8 @@ links:
     url: https://mcnav.cn/wiki/ad/index.html
     description: 查看 MCNAV 广告位说明页面。
     tags: [ad, notice]
+  - title: 文章系统使用说明
+    url: /posts/welcome
+    description: 了解如何在 MCNAV 维护站内文章。
+    tags: [guide, post]
 ---
