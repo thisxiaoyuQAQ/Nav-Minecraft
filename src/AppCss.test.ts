@@ -62,8 +62,12 @@ function parseCssRules(source: string): CssRule[] {
 const rules = parseCssRules(css)
 
 function getRuleBodies(selector: string): string[] {
+  const queryParts = selector.split(',').map((part) => part.trim())
   const bodies = rules
-    .filter((rule) => rule.selector.split(',').map((part) => part.trim()).includes(selector))
+    .filter((rule) => {
+      const ruleParts = rule.selector.split(',').map((part) => part.trim())
+      return queryParts.every((part) => ruleParts.includes(part))
+    })
     .map((rule) => rule.body)
 
   if (bodies.length === 0) {
@@ -172,5 +176,51 @@ describe('decoration policy', () => {
     const [glow] = getRuleBodies('.hero-glow')
     expect(glow).toContain('radial-gradient(circle, var(--accent-glow), transparent')
     expect(glow).toContain('border-radius: var(--r-full);')
+  })
+})
+
+describe('component token usage', () => {
+  it('uses only the 5 radius tokens across all rules', () => {
+    const radiusValues = rules
+      .map((r) => r.body.match(/border-radius:\s*([^;]+);/g) || [])
+      .flat()
+      .join('\n')
+    expect(radiusValues).not.toMatch(/border-radius:\s*\d+px(?!\s*[,)])/)
+    // 允许的硬编码仅 999px (full) — 其余必须 var(--r-*)
+    const offenders = radiusValues
+      .split('\n')
+      .filter((l) => /border-radius:\s*\d+px/.test(l) && !/999px/.test(l) && !/var\(--r-/.test(l))
+    expect(offenders).toEqual([])
+  })
+
+  it('applies backdrop-filter only to hero and topbar', () => {
+    const withBlur = rules.filter((r) => /backdrop-filter/.test(r.body))
+    const selectors = withBlur.map((r) => r.selector)
+    expect(selectors).toContain('.hero')
+    expect(selectors).toContain('.topbar')
+    expect(withBlur.length).toBe(2)
+  })
+
+  it('icon tiles use neutral panel, not accent gradients', () => {
+    const [navEmoji] = getRuleBodies('.nav-emoji')
+    expect(navEmoji).toContain('background: var(--panel);')
+    expect(navEmoji).not.toMatch(/accent/)
+
+    const [categoryIcon] = getRuleBodies('.category-icon, .link-icon')
+    expect(categoryIcon).toContain('var(--panel)')
+  })
+
+  it('nav-card uses md radius and sm shadow', () => {
+    const [card] = getRuleBodies('.nav-card')
+    expect(card).toContain('border-radius: var(--r-md);')
+    expect(card).toContain('box-shadow: var(--shadow-sm);')
+  })
+
+  it('large containers use xl radius and lg shadow', () => {
+    for (const sel of ['.hero', '.sidebar', '.category-section', '.post-page']) {
+      const [body] = getRuleBodies(sel)
+      expect(body).toContain('border-radius: var(--r-xl);')
+      expect(body).toContain('box-shadow: var(--shadow-lg);')
+    }
   })
 })
