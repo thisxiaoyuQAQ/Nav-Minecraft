@@ -69,6 +69,7 @@ describe('App', () => {
     expect(container.querySelector('.topbar-copy')).toBeInTheDocument()
     expect(container.querySelector('.topbar-stat')).toHaveTextContent('1 个分类 · 3 个资源入口')
     expect(container.querySelector('.hero-glow')).toBeInTheDocument()
+    expect(container.querySelector('.hero-pattern')).not.toBeInTheDocument()
     expect(container.querySelector('.hero-block-field')).toBeInTheDocument()
     expect(container.querySelectorAll('.hero-block')).toHaveLength(14)
     expect(container.querySelector('.search-meta')).toHaveTextContent('共收录 3 个资源入口')

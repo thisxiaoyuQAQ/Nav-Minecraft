@@ -159,7 +159,6 @@ function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-glow" aria-hidden="true" />
-      <div className="hero-pattern" aria-hidden="true" />
       <div className="hero-block-field" aria-hidden="true">
         {heroBlocks.map((block) => (
           <span className="hero-block" key={block} />
