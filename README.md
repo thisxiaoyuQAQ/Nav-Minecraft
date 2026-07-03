@@ -2,7 +2,7 @@
 
 > Minecraft 服主、插件开发者与资源维护者的导航站。
 
-🌐 网址:**[mcnav.cn](https://mcnav.cn)**
+🌐 网址: **[mcnav.cn](https://mcnav.cn)**
 
 开服找资源、开发查文档、维护翻 Wiki——把散落各处的 Minecraft 服务端核心、插件 Wiki、开发文档、工具和社区资源整理到一个站里,打开即用。
 
