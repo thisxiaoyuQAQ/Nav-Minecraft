@@ -224,3 +224,18 @@ describe('component token usage', () => {
     }
   })
 })
+
+describe('accessibility', () => {
+  it('search-box focus uses accent-strong ring at AA', () => {
+    const [focus] = getRuleBodies('.search-box:focus-within')
+    expect(focus).toContain('border-color: var(--accent-strong)')
+    expect(focus).toMatch(/outline:\s*2px solid var\(--accent-strong\)/)
+  })
+
+  it('interactive elements use outline 2px for focus', () => {
+    const focusRules = rules.filter(
+      (r) => /:focus-visible/.test(r.selector) && /outline:\s*2px/.test(r.body)
+    )
+    expect(focusRules.length).toBeGreaterThan(0)
+  })
+})

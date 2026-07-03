@@ -196,7 +196,8 @@ a {
   border-color: var(--line-strong);
   background: var(--accent-soft);
   color: var(--text);
-  outline: 0;
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
   transform: translateX(2px);
 }
 
@@ -456,8 +457,9 @@ a {
 }
 
 .search-box:focus-within {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
+  border-color: var(--accent-strong);
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
 }
 
 .search-box input {
@@ -583,7 +585,8 @@ a {
   transform: translateY(-2px);
   border-color: var(--line-strong);
   box-shadow: var(--shadow-lg);
-  outline: 0;
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
 }
 
 .nav-card:hover .card-tooltip,
@@ -664,7 +667,8 @@ a {
 .beian-link:hover,
 .beian-link:focus-visible {
   color: var(--accent-strong);
-  outline: 0;
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
 }
 
 @media (max-width: 1100px) {
