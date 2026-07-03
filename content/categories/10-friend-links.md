@@ -9,7 +9,7 @@ links:
     description: Minecraft 多人联机文档库
     tags: [friend, bukkit, wiki]
   - title: Continue Project
-    url: https://snowcutieowo.github.io/
+    url: https://continue-project.netlify.app/
     description: 续 - 维基档案馆
     tags: [friend, bukkit, wiki]    
 ---
