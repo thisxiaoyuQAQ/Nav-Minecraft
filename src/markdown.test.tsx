@@ -68,4 +68,39 @@ describe('renderMarkdown', () => {
     fireEvent.click(link!)
     expect(mockNavigate).toHaveBeenCalledWith('/posts/welcome')
   })
+
+  it('renders an image with alt and src', () => {
+    const container = containerFor('![logo](/Nether_Star.gif)')
+    const img = container.querySelector('img')
+    expect(img).not.toBeNull()
+    expect(img?.getAttribute('src')).toBe('/Nether_Star.gif')
+    expect(img?.getAttribute('alt')).toBe('logo')
+  })
+
+  it('renders a proportional image width via =W', () => {
+    const container = containerFor('![logo](/x.png =300)')
+    const img = container.querySelector('img')
+    expect(img?.style.width).toBe('300px')
+    expect(img?.style.height).toBe('auto')
+  })
+
+  it('renders a percentage image width', () => {
+    const container = containerFor('![logo](/x.png =50%)')
+    const img = container.querySelector('img')
+    expect(img?.style.width).toBe('50%')
+    expect(img?.style.height).toBe('auto')
+  })
+
+  it('renders an explicit image width and height', () => {
+    const container = containerFor('![logo](/x.png =300x200)')
+    const img = container.querySelector('img')
+    expect(img?.style.width).toBe('300px')
+    expect(img?.style.height).toBe('200px')
+  })
+
+  it('blocks javascript: image src and renders the alt text instead', () => {
+    const container = containerFor('![logo](javascript:alert(1))')
+    expect(container.querySelector('img')).toBeNull()
+    expect(container.textContent).toContain('logo')
+  })
 })

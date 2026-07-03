@@ -964,6 +964,12 @@ a {
   text-underline-offset: 3px;
 }
 
+.post-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 14px;
+}
+
 .not-found {
   display: grid;
   gap: 12px;

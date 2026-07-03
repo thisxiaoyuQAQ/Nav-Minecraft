@@ -40,6 +40,15 @@ content/categories/*.md
 
 文章则存放在 `content/posts/*.md`，每个文件即一篇文章，文件名（不含扩展名）作为 slug，访问地址为 `/posts/<slug>`。frontmatter 中的 `title`、`description`、`date`、`tags` 均为可选项：未提供 `title` 时依次回退到正文第一个一级标题，再回退到 slug。正文按 Markdown 渲染，其中的相对路径链接（如 `/posts/xxx`）会做站内跳转，外部链接在新标签页打开。
 
+文章中引用 `public/` 里的图片用 `/图片名`（如 `/Nether_Star.gif`）。支持按比例调整大小：
+
+```text
+![描述](/Nether_Star.gif)          原图大小
+![描述](/Nether_Star.gif =300)     宽 300px，高度按比例
+![描述](/Nether_Star.gif =50%)     宽 50%，高度按比例
+![描述](/Nether_Star.gif =300x200) 指定宽高（一般不用）
+```
+
 由于是单页应用，部署时需要让 `/posts/*` 等非根路径回退到 `index.html`（SPA fallback），否则直接打开或刷新深链会 404。
 
 ## 旧站源码

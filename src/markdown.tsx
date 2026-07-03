@@ -1,4 +1,4 @@
-import { Fragment, type ReactNode } from 'react'
+import { Fragment, type CSSProperties, type ReactNode } from 'react'
 
 type Block =
   | { type: 'heading'; level: 1 | 2 | 3; text: string }
@@ -163,6 +163,26 @@ function renderInline(text: string, onNavigate?: (path: string) => void): ReactN
       }
     }
 
+    if (text[i] === '!' && text[i + 1] === '[') {
+      const close = text.indexOf(']', i + 2)
+      if (close !== -1 && text[close + 1] === '(') {
+        const end = text.indexOf(')', close + 2)
+        if (end !== -1) {
+          flush()
+          const alt = text.slice(i + 2, close)
+          const inner = text.slice(close + 2, end).trim()
+          const image = parseImage(inner)
+          if (image) {
+            nodes.push(<img key={key++} src={image.url} alt={alt} style={image.style} />)
+          } else {
+            nodes.push(alt)
+          }
+          i = end + 1
+          continue
+        }
+      }
+    }
+
     if (text[i] === '[') {
       const close = text.indexOf(']', i + 1)
       if (close !== -1 && text[close + 1] === '(') {
@@ -172,15 +192,8 @@ function renderInline(text: string, onNavigate?: (path: string) => void): ReactN
           const label = text.slice(i + 1, close)
           const url = text.slice(close + 2, end)
           const isRootedInternal = url.startsWith('/')
-          const isAllowed =
-            isRootedInternal ||
-            /^https?:/i.test(url) ||
-            /^mailto:/i.test(url) ||
-            url.startsWith('#') ||
-            url.startsWith('./') ||
-            url.startsWith('../')
 
-          if (!isAllowed) {
+          if (!isAllowedUrl(url)) {
             nodes.push(label)
           } else if (isRootedInternal && onNavigate) {
             nodes.push(
@@ -217,4 +230,56 @@ function renderInline(text: string, onNavigate?: (path: string) => void): ReactN
 
   flush()
   return nodes
+}
+
+function isAllowedUrl(url: string): boolean {
+  return (
+    url.startsWith('/') ||
+    /^https?:/i.test(url) ||
+    /^mailto:/i.test(url) ||
+    url.startsWith('#') ||
+    url.startsWith('./') ||
+    url.startsWith('../')
+  )
+}
+
+interface ImageSpec {
+  url: string
+  style?: CSSProperties
+}
+
+function parseImage(inner: string): ImageSpec | null {
+  const parts = inner.split(/\s+/)
+  const url = parts[0]
+  if (!url || !isAllowedUrl(url)) {
+    return null
+  }
+
+  const style = parts.length > 1 ? parseImageSize(parts.slice(1).join(' ')) : undefined
+  return { url, style }
+}
+
+function parseImageSize(spec: string): CSSProperties | undefined {
+  if (!spec.startsWith('=')) {
+    return undefined
+  }
+
+  const value = spec.slice(1).trim()
+
+  const widthHeight = value.match(/^(\d+)x(\d+)$/)
+  if (widthHeight) {
+    return { width: `${widthHeight[1]}px`, height: `${widthHeight[2]}px` }
+  }
+
+  const percent = value.match(/^(\d+)%$/)
+  if (percent) {
+    return { width: `${percent[1]}%`, height: 'auto' }
+  }
+
+  const width = value.match(/^(\d+)$/)
+  if (width) {
+    return { width: `${width[1]}px`, height: 'auto' }
+  }
+
+  return undefined
 }
