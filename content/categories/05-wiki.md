@@ -36,10 +36,6 @@ links:
     url: https://snowcutieowo.github.io/ajLeaderboards
     description: 访问 ajLeaderboards 文档页面。
     tags: [wiki, plugin]
-  - title: Deluxemenu
-    url: https://deluxemenu.wiki.complexstudio.net/
-    description: 查看 DeluxeMenus 插件 Wiki。
-    tags: [wiki, menu, plugin]
   - title: EasyBot
     url: https://docs.inectar.cn/
     description: 访问 EasyBot 文档站。
@@ -72,7 +68,7 @@ links:
     url: https://xtianshuos-organization.gitbook.io/bw1058
     description: 访问 Bedwars1058 文档页面。
     tags: [wiki, bedwars, plugin]
-  - title: 粘液科技
+  - title: slimefun
     url: https://slimefun-addons-wiki.guizhanss.cn/
     description: 访问粘液科技附属 Wiki。
     tags: [wiki, slimefun]
@@ -144,10 +140,6 @@ links:
     url: https://docs.superiormc.cn/plotsquared-wiki
     description: 访问 PlotSquared 中文文档页面。
     tags: [wiki, plot, plugin]
-  - title: Eco后代
-    url: https://auxilor.superiormc.cn/
-    description: 访问 Auxilor 相关中文文档。
-    tags: [wiki, eco, plugin]
   - title: EcoX系列
     url: https://docs.superiormc.cn/ecox-doc
     description: 访问 Eco 系列中文文档。
