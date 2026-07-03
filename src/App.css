@@ -536,6 +536,30 @@ a {
   mask-image: linear-gradient(90deg, #000, transparent);
 }
 
+.card-tooltip {
+  position: absolute;
+  right: 16px;
+  bottom: calc(100% - 8px);
+  left: 16px;
+  z-index: 4;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 36%, var(--line));
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, var(--panel-strong), var(--panel)),
+    linear-gradient(135deg, var(--accent-soft), transparent 68%);
+  box-shadow: 0 18px 42px rgba(27, 61, 36, 0.18), var(--inner-highlight);
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.65;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px) scale(0.98);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+  visibility: hidden;
+  backdrop-filter: blur(24px) saturate(150%);
+}
+
 .nav-card:hover,
 .nav-card:focus-visible {
   transform: translateY(-3px);
@@ -548,6 +572,13 @@ a {
 .nav-card:focus-visible::after {
   opacity: 0.42;
   transform: translateX(-4px);
+}
+
+.nav-card:hover .card-tooltip,
+.nav-card:focus-visible .card-tooltip {
+  opacity: 1;
+  transform: translateY(-8px) scale(1);
+  visibility: visible;
 }
 
 .link-icon {
@@ -679,12 +710,17 @@ a {
   .nav-card {
     min-height: 108px;
   }
+
+  .card-tooltip {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
-  *::after {
+  *::after,
+  .card-tooltip {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;

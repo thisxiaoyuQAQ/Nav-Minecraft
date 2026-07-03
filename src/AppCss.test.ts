@@ -94,4 +94,21 @@ describe('App.css layout contracts', () => {
     expect(css).toContain('@media (max-width: 960px)')
     expect(css).toContain('@media (prefers-reduced-motion: reduce)')
   })
+
+  it('defines non-blocking hover and focus tooltip styles for nav cards', () => {
+    const [tooltipBase] = getRuleBodies('.card-tooltip')
+    const [tooltipHover] = getRuleBodies('.nav-card:hover .card-tooltip')
+    const [tooltipFocus] = getRuleBodies('.nav-card:focus-visible .card-tooltip')
+    const cardDescriptionRules = getRuleBodies('.card-content span')
+
+    expect(tooltipBase).toContain('position: absolute;')
+    expect(tooltipBase).toContain('pointer-events: none;')
+    expect(tooltipBase).toContain('opacity: 0;')
+    expect(tooltipBase).toContain('visibility: hidden;')
+    expect(tooltipHover).toContain('opacity: 1;')
+    expect(tooltipHover).toContain('visibility: visible;')
+    expect(tooltipFocus).toContain('opacity: 1;')
+    expect(tooltipFocus).toContain('visibility: visible;')
+    expect(cardDescriptionRules.some((ruleBody) => ruleBody.includes('-webkit-line-clamp: 2;'))).toBe(true)
+  })
 })
