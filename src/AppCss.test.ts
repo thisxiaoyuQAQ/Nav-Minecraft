@@ -118,3 +118,33 @@ describe('App.css layout contracts', () => {
     expect(navCard).toContain('overflow: visible;')
   })
 })
+
+describe('design tokens', () => {
+  it('defines the 5-level radius scale', () => {
+    const [root] = getRuleBodies(':root')
+    expect(root).toContain('--r-sm: 6px;')
+    expect(root).toContain('--r-md: 10px;')
+    expect(root).toContain('--r-lg: 14px;')
+    expect(root).toContain('--r-xl: 18px;')
+    expect(root).toContain('--r-full: 999px;')
+  })
+
+  it('defines two-level shadows and drops inner-highlight / card-shadow', () => {
+    const [root] = getRuleBodies(':root')
+    expect(root).toContain('--shadow-sm:')
+    expect(root).toContain('--shadow-lg:')
+    expect(root).not.toMatch(/--inner-highlight/)
+    expect(root).not.toMatch(/--card-shadow/)
+  })
+
+  it('aliases dark accent to white with no green accent', () => {
+    const [dark] = getRuleBodies(":root[data-theme='dark']")
+    expect(dark).toContain('--accent: #ffffff;')
+    expect(dark).not.toMatch(/--accent: #(?!ffffff)[0-9a-fA-F]{6}/)
+  })
+
+  it('uses AA-compliant light accent-strong', () => {
+    const [root] = getRuleBodies(':root')
+    expect(root).toContain('--accent-strong: #1d8242;')
+  })
+})

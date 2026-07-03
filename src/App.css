@@ -1,45 +1,70 @@
 :root {
   color-scheme: light;
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-  background: #f6fbf6;
-  color: #162318;
+  background: var(--bg);
+  color: var(--text);
+
   --bg: #f6fbf6;
   --bg-soft: #edf7ef;
-  --panel: rgba(255, 255, 255, 0.72);
-  --panel-strong: rgba(255, 255, 255, 0.9);
+  --panel: #ffffff;
+  --panel-glass: rgba(255, 255, 255, 0.72);
   --text: #162318;
-  --muted: #657466;
+  --muted: #5f6e60;
   --line: rgba(37, 91, 48, 0.14);
   --line-strong: rgba(37, 91, 48, 0.24);
+
   --accent: #3bbf63;
-  --accent-strong: #1f8d45;
+  --accent-strong: #1d8242;
   --accent-soft: rgba(59, 191, 99, 0.13);
-  --accent-glow: rgba(59, 191, 99, 0.24);
-  --shadow: 0 28px 90px rgba(27, 61, 36, 0.13);
-  --card-shadow: 0 18px 55px rgba(27, 61, 36, 0.09);
-  --inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.74);
+  --accent-glow: rgba(59, 191, 99, 0.22);
+
+  --shadow-sm: 0 1px 2px rgba(27, 61, 36, 0.04), 0 4px 12px rgba(27, 61, 36, 0.06);
+  --shadow-lg: 0 12px 40px rgba(27, 61, 36, 0.10);
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 18px;
+  --r-full: 999px;
+
+  --fs-xs: 0.78rem;
+  --fs-sm: 0.88rem;
+  --fs-base: 1rem;
+  --fs-md: 1.12rem;
+  --fs-lg: clamp(1.25rem, 2vw, 1.58rem);
+  --fs-xl: clamp(1.8rem, 4vw, 2.8rem);
+  --fs-hero: clamp(2.8rem, 7.8vw, 7.4rem);
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
   --shell-padding: clamp(16px, 2vw, 32px);
 }
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  background: #071109;
-  color: #f2f8f1;
-  --bg: #071109;
-  --bg-soft: #101b12;
-  --panel: rgba(18, 31, 21, 0.72);
-  --panel-strong: rgba(20, 35, 23, 0.92);
-  --text: #f2f8f1;
-  --muted: #aab9aa;
-  --line: rgba(190, 224, 196, 0.16);
-  --line-strong: rgba(190, 224, 196, 0.26);
-  --accent: #6ee083;
-  --accent-strong: #9cf0a4;
-  --accent-soft: rgba(110, 224, 131, 0.14);
-  --accent-glow: rgba(110, 224, 131, 0.2);
-  --shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
-  --card-shadow: 0 18px 55px rgba(0, 0, 0, 0.26);
-  --inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background: var(--bg);
+  color: var(--text);
+
+  --bg: #0a0a0a;
+  --bg-soft: #141414;
+  --panel: #161616;
+  --panel-glass: rgba(28, 28, 28, 0.72);
+  --text: #f5f5f5;
+  --muted: #9a9a9a;
+  --line: rgba(255, 255, 255, 0.10);
+  --line-strong: rgba(255, 255, 255, 0.18);
+
+  --accent: #ffffff;
+  --accent-strong: #f5f5f5;
+  --accent-soft: rgba(255, 255, 255, 0.08);
+  --accent-glow: rgba(255, 255, 255, 0.05);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.40), 0 4px 12px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.55);
 }
 
 * {
