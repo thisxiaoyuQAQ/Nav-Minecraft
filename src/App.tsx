@@ -138,7 +138,7 @@ function Sidebar({ categories }: { categories: NavCategory[] }) {
         <img className="brand-icon" src="/Nether_Star.gif" alt="MCNAV logo" />
         <span className="brand-copy">
           <span className="brand-text">MCNAV</span>
-          <span className="brand-subtitle">Minecraft Navigation</span>
+          <span className="brand-subtitle">Minecraft Navigation</span>  
         </span>
       </a>
 
