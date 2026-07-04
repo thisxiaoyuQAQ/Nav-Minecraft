@@ -561,7 +561,7 @@ a {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
   gap: 20px;
 }
 
@@ -570,7 +570,7 @@ a {
   display: flex;
   align-items: center;
   gap: 16px;
-  min-height: 118px;
+  height: 128px;
   overflow: visible;
   padding: var(--sp-5);
   border: 1px solid var(--line);
