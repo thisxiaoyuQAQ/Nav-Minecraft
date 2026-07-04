@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { getFallbackIconLabel, getFaviconUrl } from './linkIcons'
 import { countCategoryLinks, filterCategories } from './parseMarkdownNav'
 import { parseRoute, type Route } from './router'
@@ -12,7 +12,7 @@ import {
   type ThemeMode
 } from './theme'
 import type { ArticlePost } from './postTypes'
-import type { NavCategory, NavEntry, NavLink } from './navTypes'
+import type { NavCategory, NavLink } from './navTypes'
 import './App.css'
 
 interface AppProps {
@@ -216,54 +216,69 @@ function CategorySection({ category, onNavigate }: { category: NavCategory; onNa
       </div>
 
       <div className="category-entry-stack">
-        {category.links.map((entry, index) => (
-          <CategoryEntryView
-            key={`${category.id}-${index}-${entry.type === 'group' ? entry.name : `${entry.title}-${entry.url}`}`}
-            entry={entry}
-            categoryId={category.id}
-            index={index}
-            categoryIcon={category.icon}
-            onNavigate={onNavigate}
-          />
-        ))}
+        {renderCategoryEntries(category, onNavigate)}
       </div>
     </section>
   )
 }
 
-function CategoryEntryView({
-  entry,
-  categoryId,
-  index,
-  categoryIcon,
-  onNavigate
-}: {
-  entry: NavEntry
-  categoryId: string
-  index: number
-  categoryIcon: string
-  onNavigate: (path: string) => void
-}) {
-  if (entry.type === 'link') {
-    return (
-      <div className="card-grid">
-        <NavCard link={entry} categoryIcon={categoryIcon} onNavigate={onNavigate} />
-      </div>
-    )
-  }
+function renderCategoryEntries(category: NavCategory, onNavigate: (path: string) => void): ReactNode[] {
+  const blocks: ReactNode[] = []
+  let linkBatch: NavLink[] = []
+  let batchStart = 0
 
-  const groupId = `group-${categoryId}-${index}`
+  const flushLinks = () => {
+    if (linkBatch.length === 0) {
+      return
+    }
 
-  return (
-    <section className="category-group" aria-labelledby={groupId}>
-      <h3 id={groupId}>{entry.name}</h3>
-      <div className="card-grid">
-        {entry.links.map((link) => (
-          <NavCard key={`${entry.name}-${link.title}-${link.url}`} link={link} categoryIcon={categoryIcon} onNavigate={onNavigate} />
+    blocks.push(
+      <div className="card-grid" key={`links-${batchStart}`}>
+        {linkBatch.map((link) => (
+          <NavCard
+            key={`${category.id}-${link.title}-${link.url}`}
+            link={link}
+            categoryIcon={category.icon}
+            onNavigate={onNavigate}
+          />
         ))}
       </div>
-    </section>
-  )
+    )
+    linkBatch = []
+  }
+
+  category.links.forEach((entry, index) => {
+    if (entry.type === 'link') {
+      if (linkBatch.length === 0) {
+        batchStart = index
+      }
+      linkBatch.push(entry)
+      return
+    }
+
+    flushLinks()
+
+    const groupId = `group-${category.id}-${index}`
+    blocks.push(
+      <section className="category-group" aria-labelledby={groupId} key={`group-${index}`}>
+        <h3 id={groupId}>{entry.name}</h3>
+        <div className="card-grid">
+          {entry.links.map((link) => (
+            <NavCard
+              key={`${entry.name}-${link.title}-${link.url}`}
+              link={link}
+              categoryIcon={category.icon}
+              onNavigate={onNavigate}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  })
+
+  flushLinks()
+
+  return blocks
 }
 
 function NavCard({ link, categoryIcon, onNavigate }: { link: NavLink; categoryIcon: string; onNavigate: (path: string) => void }) {
