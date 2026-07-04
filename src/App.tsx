@@ -220,6 +220,8 @@ function CategorySection({ category, onNavigate }: { category: NavCategory; onNa
           <CategoryEntryView
             key={`${category.id}-${index}-${entry.type === 'group' ? entry.name : `${entry.title}-${entry.url}`}`}
             entry={entry}
+            categoryId={category.id}
+            index={index}
             categoryIcon={category.icon}
             onNavigate={onNavigate}
           />
@@ -231,10 +233,14 @@ function CategorySection({ category, onNavigate }: { category: NavCategory; onNa
 
 function CategoryEntryView({
   entry,
+  categoryId,
+  index,
   categoryIcon,
   onNavigate
 }: {
   entry: NavEntry
+  categoryId: string
+  index: number
   categoryIcon: string
   onNavigate: (path: string) => void
 }) {
@@ -246,9 +252,11 @@ function CategoryEntryView({
     )
   }
 
+  const groupId = `group-${categoryId}-${index}`
+
   return (
-    <section className="category-group" aria-labelledby={`group-${entry.name}`}>
-      <h3 id={`group-${entry.name}`}>{entry.name}</h3>
+    <section className="category-group" aria-labelledby={groupId}>
+      <h3 id={groupId}>{entry.name}</h3>
       <div className="card-grid">
         {entry.links.map((link) => (
           <NavCard key={`${entry.name}-${link.title}-${link.url}`} link={link} categoryIcon={categoryIcon} onNavigate={onNavigate} />
