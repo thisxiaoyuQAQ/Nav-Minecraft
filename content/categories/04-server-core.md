@@ -49,7 +49,7 @@ links:
     description: 主流Bukkit服务端 高性能 推荐
     tags: [server, paper, core]
   - title: Youer
-    url: https://www.mohistmc.cn/resources/Youer
+    url: https://www.mohistmc.cn/resources/youer
     description: Neoforge 并完整兼容 Bukkit/Spigot/Paper/Purpur API。
     tags: [server, core, mohist]    
   - title: Silkard
@@ -80,14 +80,16 @@ links:
     url: https://getbukkit.org/download/spigot/
     description: 原版插件核心 不推荐 优化很差
     tags: [server, bukkit, spigot]
-  - title: Forge
-    url: https://files.minecraftforge.net/net/minecraftforge/forge/
-    description: 访问 Minecraft Forge 下载页面。
-    tags: [modding, forge, server]
-  - title: Fabric
-    url: https://fabricmc.net/use/server/
-    description: 访问 Fabric 服务端使用页面。
-    tags: [modding, fabric, server]
+  - group: Mod服核心
+    links:
+      - title: Forge
+        url: https://files.minecraftforge.net/net/minecraftforge/forge/
+        description: 访问 Minecraft Forge 下载页面。
+        tags: [modding, forge, server]
+      - title: Fabric
+        url: https://fabricmc.net/use/server/
+        description: 访问 Fabric 服务端使用页面。
+        tags: [modding, fabric, server]
   - title: Vanilla
     url: https://getbukkit.org/download/vanilla
     description: 官方核心 不支持forge fabric bukkit等

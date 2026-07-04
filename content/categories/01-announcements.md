@@ -12,8 +12,8 @@ links:
     url: /posts/donate
     description: 访问 MCNAV 赞助支持页面。
     tags: [donate, support]
----
   - title: 广告
     url: /posts/ad
     description: 查看 MCNAV 广告位说明页面。
     tags: [ad, notice]
+---
