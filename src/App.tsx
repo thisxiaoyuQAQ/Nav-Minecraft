@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { trackPageView } from './analytics'
 import { getFallbackIconLabel, getFaviconUrl } from './linkIcons'
 import { countCategoryLinks, countEntriesLinks, filterCategories } from './parseMarkdownNav'
 import { parseRoute, type Route } from './router'
@@ -70,7 +71,15 @@ export function App({ initialCategories, initialPosts = [] }: AppProps) {
   }, [prefersDark, themeMode])
 
   useEffect(() => {
-    const onPop = () => setRoute(parseRoute(window.location.pathname))
+    trackPageView(window.location.pathname)
+  }, [])
+
+  useEffect(() => {
+    const onPop = () => {
+      const path = window.location.pathname
+      setRoute(parseRoute(path))
+      trackPageView(path)
+    }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)
   }, [])
@@ -78,6 +87,7 @@ export function App({ initialCategories, initialPosts = [] }: AppProps) {
   const navigate = (path: string) => {
     window.history.pushState({}, '', path)
     setRoute(parseRoute(path))
+    trackPageView(path)
     if (typeof window.scrollTo === 'function') {
       window.scrollTo(0, 0)
     }

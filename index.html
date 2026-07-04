@@ -9,6 +9,15 @@
       content="MCNAV 收集 Minecraft 服务端核心、插件 Wiki、开发文档、工具与社区资源。"
     />
     <title>MCNAV</title>
+
+    <!-- Google Analytics (GA4): send_page_view 关闭,改由 SPA 在路由切换时手动上报 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6ZP9JFNC38"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-6ZP9JFNC38', { send_page_view: false });
+    </script>
   </head>
   <body>
     <div id="root"></div>
