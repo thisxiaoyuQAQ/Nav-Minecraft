@@ -1,5 +1,5 @@
 import YAML from 'yaml'
-import type { NavCategory, NavLink } from './navTypes'
+import type { NavCategory, NavEntry, NavGroup, NavLink } from './navTypes'
 
 interface RawCategory {
   id?: unknown
@@ -15,6 +15,8 @@ interface RawLink {
   description?: unknown
   icon?: unknown
   tags?: unknown
+  group?: unknown
+  links?: unknown
 }
 
 export function parseMarkdownCategory(markdown: string, fallbackId: string): NavCategory {
@@ -35,7 +37,7 @@ export function parseMarkdownCategory(markdown: string, fallbackId: string): Nav
     name: requiredString(raw.name, fallbackId, 'name'),
     icon: stringOrDefault(raw.icon, '▫️'),
     description: stringOrDefault(raw.description, ''),
-    links: parseLinks(raw.links, fallbackId)
+    links: parseEntries(raw.links, fallbackId)
   }
 }
 
@@ -49,28 +51,86 @@ export function filterCategories(categories: NavCategory[], query: string): NavC
   return categories
     .map((category) => ({
       ...category,
-      links: category.links.filter((link) => linkMatches(link, normalizedQuery))
+      links: filterEntries(category.links, normalizedQuery)
     }))
-    .filter((category) => category.links.length > 0)
+    .filter((category) => countCategoryLinks(category) > 0)
 }
 
-function parseLinks(value: unknown, fallbackId: string): NavLink[] {
+export function countCategoryLinks(category: NavCategory): number {
+  return countEntriesLinks(category.links)
+}
+
+export function countEntriesLinks(entries: NavEntry[]): number {
+  return entries.reduce((sum, entry) => sum + (entry.type === 'group' ? entry.links.length : 1), 0)
+}
+
+function parseEntries(value: unknown, fallbackId: string): NavEntry[] {
   if (!Array.isArray(value)) {
     return []
   }
 
-  return value.map((link, index) => {
-    const raw = link as RawLink
-    const title = requiredString(raw.title, fallbackId, `links[${index}].title`)
+  return value.map((entry, index) => parseEntry(entry, fallbackId, `links[${index}]`))
+}
 
-    return {
-      title,
-      url: requiredString(raw.url, fallbackId, `links[${index}].url`),
-      description: stringOrDefault(raw.description, `访问 ${title} 相关页面。`),
-      icon: typeof raw.icon === 'string' && raw.icon.trim() ? raw.icon.trim() : undefined,
-      tags: parseTags(raw.tags)
+function parseEntry(value: unknown, fallbackId: string, path: string): NavEntry {
+  const raw = asRawLink(value)
+
+  if ('group' in raw) {
+    return parseGroup(raw, fallbackId, path)
+  }
+
+  return parseLink(raw, fallbackId, path)
+}
+
+function parseGroup(raw: RawLink, fallbackId: string, path: string): NavGroup {
+  const name = requiredString(raw.group, fallbackId, `${path}.group`)
+
+  if (!Array.isArray(raw.links)) {
+    throw new Error(`Markdown category ${fallbackId} is missing ${path}.links`)
+  }
+
+  return {
+    type: 'group',
+    name,
+    links: raw.links.map((link, index) => {
+      const childPath = `${path}.links[${index}]`
+      const child = asRawLink(link)
+
+      if ('group' in child) {
+        throw new Error(`Markdown category ${fallbackId} does not support nested group at ${childPath}`)
+      }
+
+      return parseLink(child, fallbackId, childPath)
+    })
+  }
+}
+
+function parseLink(raw: RawLink, fallbackId: string, path: string): NavLink {
+  const title = requiredString(raw.title, fallbackId, `${path}.title`)
+
+  return {
+    type: 'link',
+    title,
+    url: requiredString(raw.url, fallbackId, `${path}.url`),
+    description: stringOrDefault(raw.description, `访问 ${title} 相关页面。`),
+    icon: typeof raw.icon === 'string' && raw.icon.trim() ? raw.icon.trim() : undefined,
+    tags: parseTags(raw.tags)
+  }
+}
+
+function filterEntries(entries: NavEntry[], query: string): NavEntry[] {
+  return entries.flatMap((entry): NavEntry[] => {
+    if (entry.type === 'link') {
+      return linkMatches(entry, query) ? [entry] : []
     }
+
+    const links = entry.links.filter((link) => linkMatches(link, query))
+    return links.length > 0 ? [{ ...entry, links }] : []
   })
+}
+
+function asRawLink(value: unknown): RawLink {
+  return value && typeof value === 'object' ? value as RawLink : {}
 }
 
 function parseTags(value: unknown): string[] {
