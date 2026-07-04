@@ -99,6 +99,14 @@ describe('App.css layout contracts', () => {
     expect(css).toContain('@media (prefers-reduced-motion: reduce)')
   })
 
+  it('does not keep the topbar sticky', () => {
+    const bodies = getRuleBodies('.topbar')
+
+    for (const body of bodies) {
+      expect(body).not.toMatch(/position:\s*sticky/i)
+    }
+  })
+
   it('defines non-blocking hover and focus tooltip styles for nav cards', () => {
     const [tooltipBase] = getRuleBodies('.card-tooltip')
     const [tooltipHover] = getRuleBodies('.nav-card:hover .card-tooltip')

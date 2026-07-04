@@ -40,6 +40,32 @@ const groupedCategories: NavCategory[] = [
   }
 ]
 
+const multiGroupCategories: NavCategory[] = [
+  {
+    id: 'server-core',
+    name: '服务端核心',
+    icon: '🧱',
+    description: '服务端核心',
+    links: [
+      {
+        type: 'group',
+        name: '原版核心',
+        links: [
+          { type: 'link', title: 'Vanilla', url: 'https://getbukkit.org/vanilla', description: '原版核心', tags: ['vanilla'] }
+        ]
+      },
+      {
+        type: 'group',
+        name: 'Bukkit / Paper 系',
+        links: [
+          { type: 'link', title: 'Spigot', url: 'https://getbukkit.org/spigot', description: 'Spigot 核心', tags: ['spigot'] },
+          { type: 'link', title: 'Paper', url: 'https://papermc.io/paper', description: 'Paper 核心', tags: ['paper'] }
+        ]
+      }
+    ]
+  }
+]
+
 describe('App', () => {
   beforeEach(() => {
     window.localStorage.clear()
@@ -117,6 +143,67 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'Mod服核心' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Fabric/ })).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /Forge/ })).not.toBeInTheDocument()
+  })
+
+  it('renders a subcategory filter for categories with multiple groups', () => {
+    render(<App initialCategories={multiGroupCategories} />)
+
+    const filter = screen.getByRole('group', { name: '服务端核心 二级分类筛选' })
+    expect(within(filter).getByRole('button', { name: '全部' })).toHaveAttribute('aria-pressed', 'true')
+    expect(within(filter).getByRole('button', { name: '原版核心' })).toBeInTheDocument()
+    expect(within(filter).getByRole('button', { name: 'Bukkit / Paper 系' })).toBeInTheDocument()
+  })
+
+  it('does not show a subcategory filter for categories with fewer than two groups', () => {
+    render(<App initialCategories={groupedCategories} />)
+
+    expect(screen.queryByRole('group', { name: /二级分类筛选/ })).not.toBeInTheDocument()
+  })
+
+  it('filters cards to the selected subcategory and restores on 全部', async () => {
+    const { container } = render(<App initialCategories={multiGroupCategories} />)
+
+    const cards = () => screen.getAllByRole('link').filter((link) => link.classList.contains('nav-card'))
+    const totalBadge = () => container.querySelector('.category-total')
+
+    expect(cards().map((card) => card.textContent)).toEqual([
+      expect.stringContaining('Vanilla'),
+      expect.stringContaining('Spigot'),
+      expect.stringContaining('Paper')
+    ])
+    expect(totalBadge()).toHaveTextContent('3')
+
+    await userEvent.click(screen.getByRole('button', { name: 'Bukkit / Paper 系' }))
+
+    expect(cards().map((card) => card.textContent)).toEqual([
+      expect.stringContaining('Spigot'),
+      expect.stringContaining('Paper')
+    ])
+    expect(screen.queryByRole('link', { name: /Vanilla/ })).not.toBeInTheDocument()
+    expect(totalBadge()).toHaveTextContent('2')
+
+    await userEvent.click(screen.getByRole('button', { name: '全部' }))
+
+    expect(cards().map((card) => card.textContent)).toEqual([
+      expect.stringContaining('Vanilla'),
+      expect.stringContaining('Spigot'),
+      expect.stringContaining('Paper')
+    ])
+  })
+
+  it('shows matching results when a search hides the selected subcategory', async () => {
+    render(<App initialCategories={multiGroupCategories} />)
+
+    await userEvent.click(screen.getByRole('button', { name: '原版核心' }))
+    expect(screen.getByRole('link', { name: /Vanilla/ })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /Spigot/ })).not.toBeInTheDocument()
+
+    await userEvent.type(screen.getByPlaceholderText('搜索核心、插件、Wiki、工具或服务器资源'), 'paper')
+
+    // 原版核心 has no Paper match; the section falls back to showing the Paper result
+    // instead of staying stuck on an empty 原版核心 selection.
+    expect(screen.getByRole('link', { name: /Paper/ })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /Vanilla/ })).not.toBeInTheDocument()
   })
 
   it('does not render old product or management entry points', () => {

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { getFallbackIconLabel, getFaviconUrl } from './linkIcons'
-import { countCategoryLinks, filterCategories } from './parseMarkdownNav'
+import { countCategoryLinks, countEntriesLinks, filterCategories } from './parseMarkdownNav'
 import { parseRoute, type Route } from './router'
 import { renderMarkdown } from './markdown'
 import {
@@ -12,7 +12,7 @@ import {
   type ThemeMode
 } from './theme'
 import type { ArticlePost } from './postTypes'
-import type { NavCategory, NavLink } from './navTypes'
+import type { NavCategory, NavEntry, NavGroup, NavLink } from './navTypes'
 import './App.css'
 
 interface AppProps {
@@ -204,6 +204,20 @@ function SearchPanel({
 }
 
 function CategorySection({ category, onNavigate }: { category: NavCategory; onNavigate: (path: string) => void }) {
+  const [activeSub, setActiveSub] = useState<string>('all')
+
+  const groups = category.links.filter((entry): entry is NavGroup => entry.type === 'group')
+  const showFilter = groups.length >= 2
+  const groupNames = groups.map((group) => group.name)
+  const effectiveSub = activeSub === 'all' || groupNames.includes(activeSub) ? activeSub : 'all'
+
+  const filteredEntries = effectiveSub === 'all'
+    ? category.links
+    : category.links.filter((entry) => entry.type === 'group' && entry.name === effectiveSub)
+
+  const visibleCount = countEntriesLinks(filteredEntries)
+  const showGroupHeadings = effectiveSub === 'all'
+
   return (
     <section className="category-section" id={`category-${category.id}`} aria-labelledby={`heading-${category.id}`}>
       <div className="category-heading">
@@ -212,17 +226,46 @@ function CategorySection({ category, onNavigate }: { category: NavCategory; onNa
           <h2 id={`heading-${category.id}`}>{category.name}</h2>
           <p>{category.description}</p>
         </div>
-        <span className="category-total">{countCategoryLinks(category)}</span>
+        <span className="category-total">{visibleCount}</span>
       </div>
 
+      {showFilter && (
+        <div className="subcategory-filter" role="group" aria-label={`${category.name} 二级分类筛选`}>
+          <button
+            type="button"
+            className={effectiveSub === 'all' ? 'active' : ''}
+            aria-pressed={effectiveSub === 'all'}
+            onClick={() => setActiveSub('all')}
+          >
+            全部
+          </button>
+          {groups.map((group) => (
+            <button
+              key={group.name}
+              type="button"
+              className={effectiveSub === group.name ? 'active' : ''}
+              aria-pressed={effectiveSub === group.name}
+              onClick={() => setActiveSub(group.name)}
+            >
+              {group.name}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className="category-entry-stack">
-        {renderCategoryEntries(category, onNavigate)}
+        {renderCategoryEntries(filteredEntries, category, onNavigate, showGroupHeadings)}
       </div>
     </section>
   )
 }
 
-function renderCategoryEntries(category: NavCategory, onNavigate: (path: string) => void): ReactNode[] {
+function renderCategoryEntries(
+  entries: NavEntry[],
+  category: NavCategory,
+  onNavigate: (path: string) => void,
+  showGroupHeadings: boolean
+): ReactNode[] {
   const blocks: ReactNode[] = []
   let linkBatch: NavLink[] = []
   let batchStart = 0
@@ -247,7 +290,7 @@ function renderCategoryEntries(category: NavCategory, onNavigate: (path: string)
     linkBatch = []
   }
 
-  category.links.forEach((entry, index) => {
+  entries.forEach((entry, index) => {
     if (entry.type === 'link') {
       if (linkBatch.length === 0) {
         batchStart = index
@@ -259,20 +302,36 @@ function renderCategoryEntries(category: NavCategory, onNavigate: (path: string)
     flushLinks()
 
     const groupId = `group-${category.id}-${index}`
+    if (showGroupHeadings) {
+      blocks.push(
+        <section className="category-group" aria-labelledby={groupId} key={`group-${index}`}>
+          <h3 id={groupId}>{entry.name}</h3>
+          <div className="card-grid">
+            {entry.links.map((link) => (
+              <NavCard
+                key={`${entry.name}-${link.title}-${link.url}`}
+                link={link}
+                categoryIcon={category.icon}
+                onNavigate={onNavigate}
+              />
+            ))}
+          </div>
+        </section>
+      )
+      return
+    }
+
     blocks.push(
-      <section className="category-group" aria-labelledby={groupId} key={`group-${index}`}>
-        <h3 id={groupId}>{entry.name}</h3>
-        <div className="card-grid">
-          {entry.links.map((link) => (
-            <NavCard
-              key={`${entry.name}-${link.title}-${link.url}`}
-              link={link}
-              categoryIcon={category.icon}
-              onNavigate={onNavigate}
-            />
-          ))}
-        </div>
-      </section>
+      <div className="card-grid" key={`group-${index}`}>
+        {entry.links.map((link) => (
+          <NavCard
+            key={`${entry.name}-${link.title}-${link.url}`}
+            link={link}
+            categoryIcon={category.icon}
+            onNavigate={onNavigate}
+          />
+        ))}
+      </div>
     )
   })
 
