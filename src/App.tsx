@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getFallbackIconLabel, getFaviconUrl } from './linkIcons'
-import { filterCategories } from './parseMarkdownNav'
+import { countCategoryLinks, filterCategories } from './parseMarkdownNav'
 import { parseRoute, type Route } from './router'
 import { renderMarkdown } from './markdown'
 import {
@@ -12,7 +12,7 @@ import {
   type ThemeMode
 } from './theme'
 import type { ArticlePost } from './postTypes'
-import type { NavCategory, NavLink } from './navTypes'
+import type { NavCategory, NavEntry, NavLink } from './navTypes'
 import './App.css'
 
 interface AppProps {
@@ -48,8 +48,8 @@ export function App({ initialCategories, initialPosts = [] }: AppProps) {
     parseRoute(typeof window === 'undefined' ? '/' : window.location.pathname)
   )
   const visibleCategories = useMemo(() => filterCategories(initialCategories, query), [initialCategories, query])
-  const totalLinks = initialCategories.reduce((sum, category) => sum + category.links.length, 0)
-  const visibleLinks = visibleCategories.reduce((sum, category) => sum + category.links.length, 0)
+  const totalLinks = initialCategories.reduce((sum, category) => sum + countCategoryLinks(category), 0)
+  const visibleLinks = visibleCategories.reduce((sum, category) => sum + countCategoryLinks(category), 0)
 
   useEffect(() => {
     const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)')
@@ -147,7 +147,7 @@ function Sidebar({ categories }: { categories: NavCategory[] }) {
           <a key={category.id} href={`#category-${category.id}`}>
             <span className="nav-emoji" aria-hidden="true">{category.icon}</span>
             <span>{category.name}</span>
-            <span className="nav-count">{category.links.length}</span>
+            <span className="nav-count">{countCategoryLinks(category)}</span>
           </a>
         ))}
       </nav>
@@ -212,12 +212,46 @@ function CategorySection({ category, onNavigate }: { category: NavCategory; onNa
           <h2 id={`heading-${category.id}`}>{category.name}</h2>
           <p>{category.description}</p>
         </div>
-        <span className="category-total">{category.links.length}</span>
+        <span className="category-total">{countCategoryLinks(category)}</span>
       </div>
 
+      <div className="category-entry-stack">
+        {category.links.map((entry, index) => (
+          <CategoryEntryView
+            key={`${category.id}-${index}-${entry.type === 'group' ? entry.name : `${entry.title}-${entry.url}`}`}
+            entry={entry}
+            categoryIcon={category.icon}
+            onNavigate={onNavigate}
+          />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function CategoryEntryView({
+  entry,
+  categoryIcon,
+  onNavigate
+}: {
+  entry: NavEntry
+  categoryIcon: string
+  onNavigate: (path: string) => void
+}) {
+  if (entry.type === 'link') {
+    return (
       <div className="card-grid">
-        {category.links.map((link) => (
-          <NavCard key={`${category.id}-${link.title}-${link.url}`} link={link} categoryIcon={category.icon} onNavigate={onNavigate} />
+        <NavCard link={entry} categoryIcon={categoryIcon} onNavigate={onNavigate} />
+      </div>
+    )
+  }
+
+  return (
+    <section className="category-group" aria-labelledby={`group-${entry.name}`}>
+      <h3 id={`group-${entry.name}`}>{entry.name}</h3>
+      <div className="card-grid">
+        {entry.links.map((link) => (
+          <NavCard key={`${entry.name}-${link.title}-${link.url}`} link={link} categoryIcon={categoryIcon} onNavigate={onNavigate} />
         ))}
       </div>
     </section>

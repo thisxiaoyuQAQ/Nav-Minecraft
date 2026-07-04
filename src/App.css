@@ -534,6 +534,31 @@ a {
   text-align: center;
 }
 
+.category-entry-stack {
+  display: grid;
+  gap: 22px;
+}
+
+.category-group {
+  display: grid;
+  gap: 14px;
+}
+
+.category-group h3 {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: var(--fs-sm);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));

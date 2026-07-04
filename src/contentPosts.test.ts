@@ -19,10 +19,13 @@ describe('content posts', () => {
     const slugs = new Set(posts.map((post) => post.slug))
 
     for (const category of categories) {
-      for (const link of category.links) {
-        if (link.url.startsWith('/posts/')) {
-          const slug = link.url.slice('/posts/'.length)
-          expect(slugs.has(slug), `missing post for ${link.url}`).toBe(true)
+      for (const entry of category.links) {
+        const links = entry.type === 'group' ? entry.links : [entry]
+        for (const link of links) {
+          if (link.url.startsWith('/posts/')) {
+            const slug = link.url.slice('/posts/'.length)
+            expect(slugs.has(slug), `missing post for ${link.url}`).toBe(true)
+          }
         }
       }
     }

@@ -20,7 +20,7 @@ interface RawLink {
 }
 
 export function parseMarkdownCategory(markdown: string, fallbackId: string): NavCategory {
-  const frontmatter = markdown.match(/^---\s*\n([\s\S]*?)\n---/)
+  const frontmatter = markdown.match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---/)
 
   if (!frontmatter) {
     throw new Error(`Markdown category ${fallbackId} is missing frontmatter`)

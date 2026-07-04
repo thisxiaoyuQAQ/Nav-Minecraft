@@ -15,11 +15,17 @@ describe('content categories', () => {
       expect(category.name.trim()).not.toBe('')
       expect(category.description).not.toMatch(/TwoNav|自动导入|由.*导入/)
 
-      for (const link of category.links) {
-        expect(link.title.trim()).not.toBe('')
-        expect(link.url).toMatch(/^https?:\/\/|^\/posts\//)
-        expect(link.description).not.toMatch(/TwoNav|自动导入|由.*导入/)
-        expect(Array.isArray(link.tags)).toBe(true)
+      for (const entry of category.links) {
+        const links = entry.type === 'group' ? entry.links : [entry]
+        if (entry.type === 'group') {
+          expect(entry.name.trim()).not.toBe('')
+        }
+        for (const link of links) {
+          expect(link.title.trim()).not.toBe('')
+          expect(link.url).toMatch(/^https?:\/\/|^\/posts\//)
+          expect(link.description).not.toMatch(/TwoNav|自动导入|由.*导入/)
+          expect(Array.isArray(link.tags)).toBe(true)
+        }
       }
     }
   })

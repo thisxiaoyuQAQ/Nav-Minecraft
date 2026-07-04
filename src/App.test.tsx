@@ -12,9 +12,30 @@ const categories: NavCategory[] = [
     icon: '🎮',
     description: '游戏资源',
     links: [
-      { title: 'Modrinth', url: 'https://modrinth.com', description: '模组平台', tags: ['mods'] },
-      { title: 'NameMC', url: 'https://namemc.com', description: '皮肤站', tags: ['skin'] },
-      { title: 'Paper', url: 'https://papermc.io/downloads/paper', description: '服务端核心', tags: ['server'] }
+      { type: 'link', title: 'Modrinth', url: 'https://modrinth.com', description: '模组平台', tags: ['mods'] },
+      { type: 'link', title: 'NameMC', url: 'https://namemc.com', description: '皮肤站', tags: ['skin'] },
+      { type: 'link', title: 'Paper', url: 'https://papermc.io/downloads/paper', description: '服务端核心', tags: ['server'] }
+    ]
+  }
+]
+
+const groupedCategories: NavCategory[] = [
+  {
+    id: 'server-core',
+    name: 'Mod服核心',
+    icon: '🧩',
+    description: '服务端核心',
+    links: [
+      { type: 'link', title: 'Paper', url: 'https://papermc.io/downloads/paper', description: '服务端核心', tags: ['server'] },
+      {
+        type: 'group',
+        name: '加载器核心',
+        links: [
+          { type: 'link', title: 'Forge', url: 'https://files.minecraftforge.net', description: 'Forge 服务端', tags: ['forge'] },
+          { type: 'link', title: 'Fabric', url: 'https://fabricmc.net/use/server', description: 'Fabric 服务端', tags: ['fabric'] }
+        ]
+      },
+      { type: 'link', title: 'Velocity', url: 'https://papermc.io/software/velocity', description: '代理核心', tags: ['proxy'] }
     ]
   }
 ]
@@ -73,6 +94,29 @@ describe('App', () => {
     expect(container.querySelector('.hero-block-field')).toBeInTheDocument()
     expect(container.querySelectorAll('.hero-block')).toHaveLength(14)
     expect(container.querySelector('.search-meta')).toHaveTextContent('共收录 3 个资源入口')
+  })
+
+  it('renders grouped entries in order and counts real links', async () => {
+    render(<App initialCategories={groupedCategories} />)
+
+    expect(screen.getByText('1 个分类 · 4 个资源入口')).toBeInTheDocument()
+    expect(screen.getByText('共收录 4 个资源入口')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Mod服核心' })).toBeInTheDocument()
+
+    const cards = screen.getAllByRole('link').filter((link) => link.classList.contains('nav-card'))
+    expect(cards.map((card) => card.textContent)).toEqual([
+      expect.stringContaining('Paper'),
+      expect.stringContaining('Forge'),
+      expect.stringContaining('Fabric'),
+      expect.stringContaining('Velocity')
+    ])
+
+    await userEvent.type(screen.getByPlaceholderText('搜索核心、插件、Wiki、工具或服务器资源'), 'fabric')
+
+    expect(screen.getByText('找到 1 / 4 个资源')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Mod服核心' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Fabric/ })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /Forge/ })).not.toBeInTheDocument()
   })
 
   it('does not render old product or management entry points', () => {
@@ -182,9 +226,9 @@ describe('App', () => {
       icon: '🎮',
       description: '游戏资源',
       links: [
-        { title: 'Modrinth', url: 'https://modrinth.com', description: '模组平台', tags: ['mods'] },
-        { title: '服务端核心选择指南', url: '/posts/server-core-guide', description: '内部文章', tags: ['guide'] },
-        { title: '失踪文章', url: '/posts/missing', description: '测试 404', tags: ['test'] }
+        { type: 'link', title: 'Modrinth', url: 'https://modrinth.com', description: '模组平台', tags: ['mods'] },
+        { type: 'link', title: '服务端核心选择指南', url: '/posts/server-core-guide', description: '内部文章', tags: ['guide'] },
+        { type: 'link', title: '失踪文章', url: '/posts/missing', description: '测试 404', tags: ['test'] }
       ]
     }
   ]
