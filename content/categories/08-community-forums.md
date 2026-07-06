@@ -38,10 +38,6 @@ links:
         url: https://www.tinksp.com/
         description: 中文 Minecraft 插件、模型与服务端资源站
         tags: [community]
-      - title: 乐子导航
-        url: https://yizhan.wiki/lezi-wiki/
-        description: 中文 Minecraft 趣味内容导航 汇集整活与乐子资源
-        tags: [community, nav]
       - title: 九域
         url: https://bbs.mc9y.net/
         description: 中文 Minecraft 资源开发社区与技术论坛
@@ -58,6 +54,10 @@ links:
         url: https://klpbbs.com/
         description: 中文 Minecraft 基岩版资源与交流论坛
         tags: [forum, community]
+      - title: NexusMC
+        url: https://www.nexusmc.cn/
+        description: 一站式 Minecraft 资源与玩家社区
+        tags: [forum, community]        
   - group: 国外论坛
     links:
       - title: Curseforge
