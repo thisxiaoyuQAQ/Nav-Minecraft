@@ -18,6 +18,10 @@ links:
         url: https://mineplugin.org/
         description: 社区维护的中文插件百科 介绍常见插件用法与配置
         tags: [wiki, plugin, chinese]
+      - title: CSKB 日冕知识库
+        url: https://kb.corona.studio/
+        description: CoronaStudio知识库 - 入门指南、使用文档，不止有启动器使用窍门！
+        tags: [wiki, plugin, chinese]        
       - title: Velocity & WaterFall
         url: https://zhuanlan.zhihu.com/p/307641494
         description: 贺兰星辰编写的 Velocity 与 WaterFall 代理端群组教程

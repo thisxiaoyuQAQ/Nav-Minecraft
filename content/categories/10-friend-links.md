@@ -11,5 +11,11 @@ links:
   - title: Continue Project
     url: https://continue-project.netlify.app/
     description: 续 - 维基档案馆
-    tags: [friend, bukkit, wiki]    
+    tags: [friend, bukkit, wiki] 
+  - title: CraftMine
+    url: https://craftmine.fun/
+    description: 快乐工艺 - 服务器和创意平台
+    tags: [friend, bukkit, wiki]       
+
+
 ---
